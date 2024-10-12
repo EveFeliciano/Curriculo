@@ -1,0 +1,81 @@
+CREATE TABLE Candidato (
+    id_candidato INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(255),
+    data_nasc DATE,
+    cpf VARCHAR(11) UNIQUE,
+    email VARCHAR(100) UNIQUE,
+    telefone VARCHAR(15),
+    senha VARCHAR(10),
+    data_cadastro DATETIME
+);
+
+CREATE TABLE Empresa (
+    id_empresa INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(255),
+    cnpj VARCHAR(14) UNIQUE,
+    telefone VARCHAR(15),
+    email VARCHAR(255) UNIQUE,
+    senha VARCHAR(10),
+    data_cadastro DATETIME
+);
+
+CREATE TABLE Vaga (
+    id_vaga INT PRIMARY KEY AUTO_INCREMENT,
+    titulo VARCHAR(100),
+    cidade VARCHAR(100),
+    descricao TEXT,
+    data_publicacao DATETIME,
+    data_fechamento DATETIME,
+    estado VARCHAR(100),
+    campo_opcional TEXT,
+    id_empresa INT,
+    FOREIGN KEY (id_empresa) REFERENCES Empresa (id_empresa)
+);
+
+CREATE TABLE Candidatura (
+    id_candidatura INT PRIMARY KEY AUTO_INCREMENT,
+    data_candidatura DATETIME,
+    status ENUM('em espera', 'reprovado', 'aprovado'),
+    feedback TEXT,
+    id_vaga INT,
+    FOREIGN KEY (id_vaga) REFERENCES Vaga (id_vaga)
+);
+
+CREATE TABLE Qualidades (
+    id_qualidades INT PRIMARY KEY AUTO_INCREMENT,
+    descricao VARCHAR(100)
+);
+
+CREATE TABLE cand_qualidades (
+    id_cand_qualidades INT PRIMARY KEY AUTO_INCREMENT,
+    outro VARCHAR(100),
+    id_candidatura INT,
+    id_qualidades INT,
+    FOREIGN KEY (id_candidatura) REFERENCES Candidatura (id_candidatura),
+    FOREIGN KEY (id_qualidades) REFERENCES Qualidades (id_qualidades)
+);
+
+CREATE TABLE Administrador (
+    id_administrador INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(255),
+    email VARCHAR(255) UNIQUE,
+    senha VARCHAR(10),
+    data_cadastro DATETIME
+);
+
+CREATE TABLE Entrevista (
+    id_entrevista INT PRIMARY KEY AUTO_INCREMENT,
+    data_entrevista DATETIME,
+    tipo ENUM('virtual', 'presencial'),
+    localizacao VARCHAR(100),
+    id_candidatura INT,
+    FOREIGN KEY (id_candidatura) REFERENCES Candidatura (id_candidatura)
+);
+
+CREATE TABLE inscreve (
+    id_candidatura INT,
+    id_candidato INT,
+    PRIMARY KEY (id_candidatura, id_candidato),
+    FOREIGN KEY (id_candidatura) REFERENCES Candidatura (id_candidatura),
+    FOREIGN KEY (id_candidato) REFERENCES Candidato (id_candidato)
+);
