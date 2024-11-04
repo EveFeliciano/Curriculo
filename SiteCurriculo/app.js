@@ -42,10 +42,8 @@ app.post('/login', (req, res) => {
 //Essa função também pega os dados passados pelo form e adiciona a constante do tempo atual.
 app.post('/cadastro', async (req, res) => {
     const { email, username, dataNasc, cpf, telefone, password } = req.body;
-    //A constante do tempo atual
     const time = new Date();
     
-    //Lista do que vai ser inserido na tabela
     const novoCandidato = {
         email,
         nome: username,
@@ -59,16 +57,16 @@ app.post('/cadastro', async (req, res) => {
     try {
         const result = await AddCandidato(novoCandidato);
         if (result.success) {
-            // Redireciona após o cadastro bem-sucedido
             res.redirect('/'); // Redireciona para a página inicial ou onde desejar
         } else {
-            res.status(400).send(result.message); // Mensagem de erro
+            res.status(400).send(result.message); // Mensagem de erro específica
         }
     } catch (err) {
-        console.error(err); // Para logar o erro no console
+        console.error(err);
         res.status(500).send('Erro no servidor');
     }
 });
+
 
 // Inicializa o servidor
 app.listen(3000, () => {
