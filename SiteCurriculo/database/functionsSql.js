@@ -14,8 +14,7 @@ const GetCandidatos = () => {
 //fazer pro site não crashar. Por exemplo, eu coloquei, sem querer, um cpf repetido, dai veio um erro gigante na tela, MUITO grande
 //Por isso ia ser uma boa se a gente fizesse uma tela bonitinha pros erros.
 const AddCandidato = async (candidato) => {
-    const requiredFields = ['email', 'nome', 'data_nasc', 'cpf', 'telefone', 'senha', 'data_cadastro'];
-    //Não sei o quão necessário  é essa verificação, mas vai ajudar a encontrar possíveis erros
+    const requiredFields = ['email', 'nome', 'data_nasc', 'cpf', 'telefone', 'senha'];
     for (const field of requiredFields) {
         if (!candidato[field]) {
             throw new Error(`Campo obrigatório faltando: ${field}`);
@@ -23,6 +22,24 @@ const AddCandidato = async (candidato) => {
     }
 
     try {
+        // Verifica se o e-mail já existe no banco de dados
+        const emailExists = await new Promise((resolve, reject) => {
+            db.query('SELECT email FROM candidato WHERE email = ?', [candidato.email], (err, results) => {
+                if (err) {
+                    return reject(new Error(`Erro ao verificar e-mail: ${err.message}`));
+                }
+                resolve(results.length > 0); // Retorna true se o e-mail já existir
+            });
+        });        
+
+        if (emailExists) {
+            return {
+                success: false,
+                message: 'Este e-mail já está cadastrado.'
+            };
+        }
+
+        // Inserir o candidato, já que o e-mail não existe
         const result = await new Promise((resolve, reject) => {
             db.query('INSERT INTO candidato SET ?', candidato, (err, result) => {
                 if (err) {
@@ -34,7 +51,7 @@ const AddCandidato = async (candidato) => {
 
         return {
             success: true,
-            id: result.insertId, 
+            id: result.insertId,
             message: 'Candidato adicionado com sucesso!'
         };
         
@@ -45,6 +62,7 @@ const AddCandidato = async (candidato) => {
         };
     }
 };
+
 
 // Função para verificar o login, bem de boa, acho que aqui a gente não vai precisar fazer nenhuma mudança
 const VerificaLogin = (username, password) => {
