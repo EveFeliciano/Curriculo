@@ -30,7 +30,7 @@ const AddCandidato = async (candidato) => {
                 }
                 resolve(results.length > 0); // Retorna true se o e-mail já existir
             });
-        });        
+        });
 
         if (emailExists) {
             return {
@@ -39,10 +39,30 @@ const AddCandidato = async (candidato) => {
             };
         }
 
-        // Inserir o candidato, já que o e-mail não existe
+        // Verifica se o CPF já existe no banco de dados
+        const cpfExists = await new Promise((resolve, reject) => {
+            db.query('SELECT cpf FROM candidato WHERE cpf = ?', [candidato.cpf], (err, results) => {
+                if (err) {
+                    return reject(new Error(`Erro ao verificar CPF: ${err.message}`));
+                }
+                resolve(results.length > 0); // Retorna true se o CPF já existir
+            });
+        });
+
+        if (cpfExists) {
+            return {
+                success: false,
+                message: 'Este CPF já está cadastrado.'
+            };
+        }
+
+        // Agora que o CPF e o e-mail foram verificados, podemos inserir o candidato
         const result = await new Promise((resolve, reject) => {
             db.query('INSERT INTO candidato SET ?', candidato, (err, result) => {
                 if (err) {
+                    if (err.code === 'ER_DUP_ENTRY') {
+                        return reject(new Error('Este CPF já está cadastrado.'));
+                    }
                     reject(new Error(`Erro ao inserir candidato: ${err.message}`));
                 }
                 resolve(result);
@@ -54,7 +74,7 @@ const AddCandidato = async (candidato) => {
             id: result.insertId,
             message: 'Candidato adicionado com sucesso!'
         };
-        
+
     } catch (err) {
         return {
             success: false,
@@ -62,7 +82,6 @@ const AddCandidato = async (candidato) => {
         };
     }
 };
-
 
 // Função para verificar o login, bem de boa, acho que aqui a gente não vai precisar fazer nenhuma mudança
 const VerificaLogin = (username, password) => {
@@ -78,13 +97,27 @@ const VerificaLogin = (username, password) => {
     });
 }
 
+const VerificaLoginAdmin = (username, password) => {
+    return new Promise((resolve, reject) => {
+        db.query('SELECT * FROM administrador WHERE nome = ? AND senha = ?', [username, password], (err, result) => {
+            if (err) reject(err);
+            if (result.length > 0) {
+                resolve(result[0]);  // Se o login for bem-sucedido, retorna os dados do candidato
+            } else {
+                resolve(null);  // Se falhar, retorna nulo :(
+            }
+        });
+    });
+}
+
 //Aqui vai ficar todo o resto de funções pro site
 //Falta bastant coisa ainda
-//Última atualização 24/10 ---> quinta feira
+//Última atualização 05/11 ---> terça-feira
 
 //Aqui vai exportar TODAS as funções desse script
 module.exports = {
     GetCandidatos,
     AddCandidato,
-    VerificaLogin
+    VerificaLogin,
+    VerificaLoginAdmin
 };
