@@ -1,6 +1,6 @@
 //Importando um monte de pacotes, se não dificulta bastante fazer o link de todos os arquivos html, js, etc.
 const express = require('express');
-const { VerificaLogin, AddCandidato } = require('./database/functionsSql'); 
+const { VerificaLogin, AddCandidato, VerificaLoginAdmin } = require('./database/functionsSql'); 
 const app = express();
 const path = require('path');
 app.use(express.urlencoded({ extended: true })); 
@@ -11,33 +11,44 @@ app.use(express.static(path.join(__dirname, 'public')));
 //precisa adicionar mais uma função semelhante a essa pra fazer a conexão corretamente entre os arquivos
 //Nessa função a gente tá dizendo que sempre que a rota da página for só "/", a gente vai ser levado pro index.html
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+    res.sendFile(path.join(__dirname, '/public/html/index.html'));
 });
 //Rota do login
 app.get('/login', (req, res) => {
-    res.sendFile(__dirname + '/login.html');
+    res.sendFile(__dirname + '/public/html/login.html');
 });
 //Rota do cadastro
 app.get('/cadastro', (req, res) => {
-    res.sendFile(__dirname + '/cadastro.html');
+    res.sendFile(__dirname + '/public/html/cadastro.html');
 });
 
 //Nessa função a gente tá basicamente pegando os dados que são enviados pelo forms da página de login e puxando a função de verificação
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
-    //A funcão de verificação
+
     VerificaLogin(username, password)
         .then((user) => {
             if (user) {
-                res.send('Login bem-sucedido!'); // Login bem-sucedido
+                res.send('Login bem-sucedido!'); // Login bem-sucedido para usuário comum
             } else {
-                res.send('Nome de usuário ou senha incorretos.'); // Login falhou
+                // Tenta login de administrador apenas se o login de usuário comum falhar
+                return VerificaLoginAdmin(username, password);
+            }
+        })
+        .then((admin) => {
+            if (admin) {
+                res.send('Login bem-sucedido!'); // Login bem-sucedido para admin
+            } else if (admin === false || admin === null) {
+                // Codifique o parâmetro e redirecione para a página de login
+                const errorMsg = encodeURIComponent('Nome de usuário ou senha incorretos!');
+                res.redirect(`/login?error=${errorMsg}`);
             }
         })
         .catch((err) => {
             res.status(500).send('Erro no servidor');
         });
 });
+
 
 //Essa função também pega os dados passados pelo form e adiciona a constante do tempo atual.
 app.post('/cadastro', async (req, res) => {
@@ -59,7 +70,8 @@ app.post('/cadastro', async (req, res) => {
         if (result.success) {
             res.redirect('/'); // Redireciona para a página inicial ou onde desejar
         } else {
-            res.status(400).send(result.message); // Mensagem de erro específica
+            const errorMsg = encodeURIComponent(result.message);
+            res.redirect(`/cadastro?error=${errorMsg}`); // Mensagem de erro específica
         }
     } catch (err) {
         console.error(err);
