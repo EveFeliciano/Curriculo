@@ -1,0 +1,197 @@
+<!-- Seção para adicionar uma nova vaga -->
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="icon" href="../public/img/MALAAZUL.png" type="image/x-icon">
+        <title>EMPREGA AI</title>
+
+        <!-- ARQUIVOS DO CSS -->        
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans&display=swap" rel="stylesheet">
+                        
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+
+        <link href="css/bootstrap-icons.css" rel="stylesheet">
+
+        <link href="css/templatemo-topic-listing.css" rel="stylesheet">      
+    </head>
+
+    <style>
+        /* Seção do formulário */
+/* Seção do formulário */
+.add-job-section {
+    background-color: #f8f9fa; /* Fundo simples fora do formulário */
+    padding: 40px 0;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.add-job-section h2 {
+    color: #333;
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+/* Formulário com fundo degradê */
+.add-job-section form {
+    background: linear-gradient(135deg, #2dbcdf, #063744); /* Degradê azul dentro do formulário */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: white; /* Texto branco para visibilidade */
+}
+
+/* Input e textarea do formulário */
+.add-job-section .form-control {
+    border: 2px solid #ffffff;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 1.1rem;
+    background-color: rgba(255, 255, 255, 0.8); /* Fundo branco semi-transparente */
+    color: #333; /* Texto escuro para contrastar com o fundo */
+    transition: border-color 0.3s ease;
+}
+
+.add-job-section .form-control:focus {
+    border-color: #ffffff;
+    background-color: rgba(255, 255, 255, 1); /* Fundo branco completo ao focar */
+    box-shadow: none;
+}
+
+/* Botão de enviar */
+.add-job-section .btn-primary {
+    background-color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    color: #007BFF; /* Texto azul */
+    transition: background-color 0.3s ease;
+    border-radius: 5px;
+}
+
+.add-job-section .btn-primary:hover {
+    background-color: #00C6FF;
+    color: white; /* Texto branco no hover */
+}
+
+/* Rótulos */
+.add-job-section .form-label {
+    color: white;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+/* Espaçamento entre elementos */
+.add-job-section .mb-3 {
+    margin-bottom: 20px;
+}
+
+
+</style>
+    
+<body id="top">
+
+    <main>
+
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <a class="navbar-brand" href="index.html">
+                    <img src="../public/img/Logo_Emprga_Aí-removebg-preview.png" alt="Logo da Empresa" style="height: 50px;">
+                    <span>Emprega aí</span>
+                </a>
+
+                <div class="d-lg-none ms-auto me-4">
+                    <a href="" class="navbar-icon bi-person smoothscroll"></a>
+                </div>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-lg-5 me-lg-auto">
+                        <li class="nav-item">
+                            <a class="nav-link click-scroll" href="#section_1">Início</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link click-scroll" href="#section_2">Suas Vagas</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link click-scroll" href="contact.html">Nos contate</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        
+
+        <section class="hero-section d-flex justify-content-center align-items-center" id="section_1">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-lg-8 col-12 mx-auto">
+                        <h1 class="text-white text-center">EMPREGA AÍ!</h1>
+
+                        <h6 class="text-center">Entrega sua vaga aí, que empregamos por aqui!</h6>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="add-job-section section-padding">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <h2 class="mb-4">Cadastrar Nova Vaga</h2>
+                    </div>
+                </div>
+
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <form id="job-form">
+                <div class="mb-3">
+                    <label for="job-title" class="form-label">Título da Vaga</label>
+                    <input type="text" class="form-control" id="job-title" placeholder="Ex: Web Designer" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="job-description" class="form-label">Descrição da Vaga</label>
+                    <textarea class="form-control" id="job-description" rows="4" placeholder="Descreva as responsabilidades e requisitos da vaga" required></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label for="job-category" class="form-label">Categoria</label>
+                    <select class="form-select" id="job-category" required>
+                        <option value="design">Design</option>
+                        <option value="marketing">Marketing</option>
+                        <option value="finance">Finance</option>
+                        <option value="music">Música</option>
+                        <option value="education">Educação</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Cadastrar Vaga</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery.sticky.js"></script>
+    <script src="js/click-scroll.js"></script>
+    <script src="js/custom.js"></script>
+
+</body>
+
+

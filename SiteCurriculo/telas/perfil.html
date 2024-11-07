@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>Vaga de emprego</title>
+
+        <!-- CSS FILES -->        
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans&display=swap" rel="stylesheet">
+                        
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+
+        <link href="css/bootstrap-icons.css" rel="stylesheet">
+
+        <link href="css/templatemo-topic-listing.css" rel="stylesheet">
+
+    </head>
+
+    <style>
+        /* Estilo para o container do cartão */
+        .job-card {
+            width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+            background-color: #fff;
+        }
+
+        /* Título da vaga */
+        .job-card h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        /* Informações sobre a empresa */
+        .job-card p {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        /* Estilo para o botão de status */
+        .status-btn {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 4px;
+            background-color: #28a745;
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        /* Mudar cor no hover */
+        .status-btn:hover {
+            background-color: #218838;
+        }
+
+        /* Responsivo */
+        @media (max-width: 600px) {
+            .job-card {
+                width: 90%;
+            }
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .profile-container {
+            width: 60%;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .profile-header img {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            cursor: pointer;
+        }
+
+        .change-photo-text {
+            display: none;
+            position: absolute;
+            top: 75px;
+            left: 10px;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .profile-header img:hover + .change-photo-text {
+            display: block;
+        }
+
+        .profile-header h2 {
+            font-size: 24px;
+            margin: 0;
+            margin-left: 20px;
+        }
+
+        .profile-info {
+            margin-bottom: 20px;
+        }
+
+        .profile-info p {
+            font-size: 16px;
+            color: #555;
+            margin: 5px 0;
+        }
+
+        .upload-section {
+            border-top: 1px solid #ccc;
+            padding-top: 20px;
+        }
+
+        .upload-section h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .upload-section input[type="file"] {
+            display: inline-block; /* Mostra o campo de upload de currículo */
+        }
+
+        .upload-section label {
+            display: block;
+            margin-top: 10px;
+        }
+
+        .upload-section button {
+            display: block;
+            margin-top: 10px;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .upload-section button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    
+    <body id="top">
+
+        <main>
+
+            <nav class="navbar navbar-expand-lg">
+                <div class="container">
+                    <a class="navbar-brand" href="index.html">
+                        <img src="../public/img/Logo_Emprga_Aí-removebg-preview.png" alt="Logo da Empresa" style="height: 50px;">
+                        <span>Emprega aí</span>
+                    </a>
+
+    
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+    
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ms-lg-5 me-lg-auto">
+                            <li class="nav-item">
+                                <a class="nav-link click-scroll" href="index.html">Início</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link click-scroll" href="#section_2">Vagas disponíveis</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link click-scroll" href="contact.html">Nos contate</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            
+
+            <header class="site-header d-flex flex-column justify-content-center align-items-center">
+                <div class="container">
+                    <div class="row justify-content-center align-items-center">
+
+                        <div class="col-lg-5 col-12 mb-5"></div>
+
+                            <h2 class="text-white">Bem vindo(a)<br>Nome Sobrenome</h2>
+
+                        </div>
+
+                        <div class="col-lg-5 col-12">
+                            <div class="topics-detail-block bg-white shadow-lg">
+                                <img src="" class="topics-detail-block-image img-fluid">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="profile-container">
+                <div class="profile-header">
+                    <!-- Imagem de perfil do usuário -->
+                    <img src="https://via.placeholder.com/100" alt="Foto de perfil do usuário" id="profilePic">
+                    <span class="change-photo-text">Trocar Foto</span>
+                    <h2>Nome do Usuário</h2>
+                </div>
+            
+                <div class="upload-section">
+                    <h3>Enviar Documentos</h3>
+                    <!-- Formulário de upload de foto de perfil e currículo -->
+                    <form action="/upload" method="POST" enctype="multipart/form-data">
+                        <!-- Campo para a foto de perfil -->
+                        <input type="file" id="uploadPhoto" name="fotoPerfil" accept="image/*">
+            
+                        <!-- Campo para o upload do currículo -->
+                        <label for="curriculo">Upload do Currículo:</label>
+                        <input type="file" name="curriculo" accept=".pdf, .doc, .docx"><br><br>
+            
+                        <!-- Botão para enviar os arquivos -->
+                        <button type="submit">Enviar Documentos</button>
+                    </form>
+                </div>
+                
+                <center><h1 style="font-size: 30px; margin-top: 50px;">Suas Vagas</h1></center>
+
+                <div class="job-card">
+                    <h3>Desenvolvedor Web</h3>
+                    <p><strong>Empresa:</strong> Anonima</p>
+                    <p><strong>Localização:</strong> São Paulo, SP</p>
+                    <p><strong>Data de Cadastro:</strong> 05/11/2024</p>
+                    <p><strong>Status:</strong> Em análise</p>
+                    <a href="#" class="status-btn">Ver Detalhes</a>
+                </div>
+        
+                        <div class="job-card">
+                    <h3>Desenvolvedor Web</h3>
+                    <p><strong>Empresa:</strong> Tech Innovators</p>
+                    <p><strong>Localização:</strong> São Paulo, SP</p>
+                    <p><strong>Data de Cadastro:</strong> 05/11/2024</p>
+                    <p><strong>Status:</strong> Em análise</p>
+                    <a href="#" class="status-btn">Ver Detalhes</a>
+                </div>
+            </div>
+
+
+            
+            
+
+        </main>
+		
+    </body>
+
+    <script>
+        // Seleciona a imagem do perfil e o campo de upload
+        const profilePic = document.getElementById('profilePic');
+        const uploadPhoto = document.getElementById('uploadPhoto');
+    
+        // Adiciona um evento de clique na imagem
+        profilePic.addEventListener('click', function() {
+            // Simula o clique no campo de upload de arquivo
+            uploadPhoto.click();
+        });
+    
+        // Opcional: Pré-visualização da imagem escolhida
+        uploadPhoto.addEventListener('change', function(event) {
+            if (event.target.files.length > 0) {
+                const file = event.target.files[0];
+                const reader = new FileReader();
+    
+                reader.onload = function(e) {
+                    // Atualiza a imagem de perfil com a nova imagem
+                    profilePic.src = e.target.result;
+                };
+    
+                // Lê a imagem como uma URL de dados
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+
+
+        <!-- JAVASCRIPT FILES -->
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.bundle.min.js"></script>
+        <script src="js/jquery.sticky.js"></script>
+        <script src="js/custom.js"></script>
+
+    
