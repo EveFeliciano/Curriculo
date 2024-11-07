@@ -7,7 +7,7 @@
 
         <meta name="description" content="">
         <meta name="author" content="">
-        <link rel="icon" href="../public/img/MALAAZUL.png" type="image/x-icon">
+        <link rel="icon" href="./images/MALAAZUL.png" type="image/x-icon">
         <title>EMPREGA AI</title>
 
         <!-- ARQUIVOS DO CSS -->        
@@ -104,7 +104,7 @@
         <nav class="navbar navbar-expand-lg">
             <div class="container">
                 <a class="navbar-brand" href="index.html">
-                    <img src="../public/img/Logo_Emprga_Aí-removebg-preview.png" alt="Logo da Empresa" style="height: 50px;">
+                    <img src="./images/Logo_Emprga_Aí-removebg-preview.png" alt="Logo da Empresa" style="height: 50px;">
                     <span>Emprega aí</span>
                 </a>
 
@@ -130,6 +130,11 @@
                             <a class="nav-link click-scroll" href="contact.html">Nos contate</a>
                         </li>
                     </ul>
+                </div>
+                <div style="font-family: Verdana, Geneva, Tahoma, sans-serif;">
+                    <% if (usuario) { %>
+                        <span>Empresa: <%= usuario.nome %></span> <!-- Exibe o nome do usuário logado -->
+                    <% } %>
                 </div>
             </div>
         </nav>
@@ -168,6 +173,21 @@
                 <div class="mb-3">
                     <label for="job-description" class="form-label">Descrição da Vaga</label>
                     <textarea class="form-control" id="job-description" rows="4" placeholder="Descreva as responsabilidades e requisitos da vaga" required></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label for="job-description" class="form-label">Cidade</label>
+                    <input type="text" class="form-control" id="job-description" placeholder="Digite a cidade onde a vaga está disponível" required></input>
+                </div>
+
+                <div class="mb-3">
+                    <label for="job-description" class="form-label">Estado</label>
+                    <input type="text" class="form-control" id="job-description" placeholder="Digite o estado onde a vaga está disponível" required></input>
+                </div>
+
+                <div class="mb-3">
+                    <label for="job-description" class="form-label">Estado</label>
+                    <input type="date" class="form-control" id="job-description" placeholder="Digite a data de fechamento da vaga" required></input>
                 </div>
 
                 <div class="mb-3">
