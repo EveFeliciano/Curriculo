@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro</title>
+    <link rel="stylesheet" href="./css/login.css">
+</head>
+<body>
+    <div class="container">
+        <form id="cadastroForm" action="/cadastro-empresa" method="post">
+            <h1>Cadastro</h1>
+            <div class="input-box">
+                <input type="text" name="username" placeholder="Nome da empresa" required />
+            </div>
+
+            <div class="input-box">
+                <input type="text" name="cnpj" placeholder="CNPJ" required pattern="\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}" title="Formato: 00.000.000/0000-00"/>
+            </div>     
+
+            <div class="input-box">
+                <input type="text" name="telefone" placeholder="Telefone" required pattern="\(\d{2}\)\s\d{4,5}-\d{4}" title="Formato: (99) 99999-9999"/>
+            </div>
+
+            <div class="input-box">
+                <input type="email" name="email" placeholder="Email" required />
+            </div>
+
+            <div class="input-box">
+                <input type="password" name="password" placeholder="Senha" required />
+            </div>
+
+            <div id="error-message" style="display: none; color: red; padding: 10px; background-color: #f9f9f9; border-radius: 5px; margin-bottom: 10px;">
+            </div>
+      
+            <button type="submit" class="btn">Sign In</button>
+        </form>
+    </div>
+    <script src="js/cadastro.js"></script>
+</body>
+</html>
