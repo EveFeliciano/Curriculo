@@ -192,6 +192,57 @@ const VerificaEmpresa = (username, password) => {
     });
 }
 
+const AddVaga = async (vaga) => {
+    const requiredFields = ['titulo', 'descricao', 'cidade', 'estado', 'data_fechamento', 'categoria', 'requisitos'];
+    for (const field of requiredFields) {
+        if (!vaga[field]) {
+            throw new Error(`Campo obrigatório faltando: ${field}`);
+        }
+    }
+
+    try {
+        // Verifica se o título da vaga já existe no banco de dados
+        const tituloExists = await new Promise((resolve, reject) => {
+            db.query('SELECT titulo FROM vaga WHERE titulo = ? AND id_empresa = ?', [vaga.titulo, vaga.id_empresa], (err, results) => {
+                if (err) {
+                    return reject(new Error(`Erro ao verificar título da vaga: ${err.message}`));
+                }
+                resolve(results.length > 0); // Retorna true se o título já existir para esta empresa
+            });
+        });
+
+        if (tituloExists) {
+            return {
+                success: false,
+                message: 'Já existe uma vaga com esse título para sua empresa.'
+            };
+        }
+
+        // Inserindo a vaga no banco de dados
+        const result = await new Promise((resolve, reject) => {
+            db.query('INSERT INTO vaga SET ?', vaga, (err, result) => {
+                if (err) {
+                    reject(new Error(`Erro ao inserir vaga: ${err.message}`));
+                }
+                resolve(result);
+            });
+        });
+
+        return {
+            success: true,
+            id: result.insertId,
+            message: 'Vaga cadastrada com sucesso!'
+        };
+
+    } catch (err) {
+        return {
+            success: false,
+            message: err.message
+        };
+    }
+};
+
+
 //Aqui vai ficar todo o resto de funções pro site
 //Falta bastant coisa ainda
 //Última atualização 05/11 ---> terça-feira
@@ -203,5 +254,6 @@ module.exports = {
     VerificaLogin,
     VerificaLoginAdmin,
     AddEmpresa,
-    VerificaEmpresa
+    VerificaEmpresa,
+    AddVaga
 };
