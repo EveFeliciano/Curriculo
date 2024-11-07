@@ -27,7 +27,7 @@ CREATE TABLE Vaga (
     data_publicacao DATETIME,
     data_fechamento DATETIME,
     estado VARCHAR(100),
-    campo_opcional TEXT,
+    categorias VARCHAR(100),
     id_empresa INT,
     FOREIGN KEY (id_empresa) REFERENCES Empresa (id_empresa)
 );
