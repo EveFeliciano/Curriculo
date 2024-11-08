@@ -11,17 +11,16 @@
 
         <!-- CSS FILES -->        
         <link rel="preconnect" href="https://fonts.googleapis.com">
-        
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans&display=swap" rel="stylesheet">
-                        
-        <link href="css/bootstrap.min.css" rel="stylesheet">
-
-        <link href="css/bootstrap-icons.css" rel="stylesheet">
-
-        <link href="css/templatemo-topic-listing.css" rel="stylesheet">
-
+        <link href="/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/css/bootstrap-icons.css" rel="stylesheet">
+        <link href="/css/templatemo-topic-listing.css" rel="stylesheet">
+        <style>
+            .navbar{
+                background-color: rgb(117, 210, 196);
+            }
+        </style>
     </head>
     
     <body id="top">
@@ -30,148 +29,96 @@
 
             <nav class="navbar navbar-expand-lg">
                 <div class="container">
-                    <a class="navbar-brand" href="index.html">
-                        <img src="../public/img/Logo_Emprga_Aí-removebg-preview.png" alt="Logo da Empresa" style="height: 50px;">
+                    <a class="navbar-brand" href="/">
+                        <img src="/images/Logo_Emprga_Aí-removebg-preview.png" alt="Logo da Empresa" style="height: 50px;">
                         <span>Emprega aí</span>
                     </a>
-
-                    <div class="d-lg-none ms-auto me-4">
-                        <a href="../login.html" class="navbar-icon bi-person smoothscroll"></a>
-                    </div>
-    
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-    
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav ms-lg-5 me-lg-auto">
                             <li class="nav-item">
-                                <a class="nav-link click-scroll" href="index.html">Início</a>
+                                <a class="nav-link click-scroll" href="/">Início</a>
                             </li>
-
                             <li class="nav-item">
                                 <a class="nav-link click-scroll" href="#section_2">Vagas disponíveis</a>
                             </li>
-
                             <li class="nav-item">
                                 <a class="nav-link click-scroll" href="contact.html">Nos contate</a>
                             </li>
                         </ul>
-
-                        <div class="d-none d-lg-block">
-                            <a href="../login.html" class="navbar-icon bi-person smoothscroll"></a>
+                        <div style="font-family: Verdana, Geneva, Tahoma, sans-serif;">
+                            <% if (usuario) { %>
+                                <span>Perfil: <%= usuario.nome %></span> <!-- Exibe o nome do usuário logado -->
+                            <% } %>
                         </div>
                     </div>
                 </div>
             </nav>
-            
 
             <header class="site-header d-flex flex-column justify-content-center align-items-center">
                 <div class="container">
                     <div class="row justify-content-center align-items-center">
-
                         <div class="col-lg-5 col-12 mb-5">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="index.html">Homepage</a></li>
-
-                                    <li class="breadcrumb-item active" aria-current="page">Web Design</li>
+                                    <li class="breadcrumb-item"><a href="/">Homepage</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page"><%= vaga.categoria %></li>
                                 </ol>
                             </nav>
-
-                            <h2 class="text-white">Vaga de emprego<br> Web Design</h2>
-                            <h3 style="font-size: 18px; color: rgb(4, 0, 73);">empresa anônima</h3>
+                            <h2 class="text-white"><%= vaga.titulo %></h2> <!-- Nome da vaga -->
 
                             <div class="d-flex align-items-center mt-5">
                                 <a href="#topics-detail" class="btn custom-btn custom-border-btn smoothscroll me-4">Sobre</a>
-
                                 <a href="#top" class="custom-icon bi-bookmark smoothscroll"></a>
                             </div>
                         </div>
-
                         <div class="col-lg-5 col-12">
                             <div class="topics-detail-block bg-white shadow-lg">
-                                <img src="images/topics/undraw_Remote_design_team_re_urdx.png" class="topics-detail-block-image img-fluid">
+                                <img src="/images/topics/undraw_Remote_design_team_re_urdx.png" class="topics-detail-block-image img-fluid">
                             </div>
                         </div>
-
                     </div>
                 </div>
             </header>
 
-
             <section class="topics-detail-section section-padding" id="topics-detail">
                 <div class="container">
                     <div class="row">
-
                         <div class="col-lg-8 col-12 m-auto">
                             <h3 class="mb-4">Descrição da vaga</h3>
-
-                            <p>Estamos em busca de um Web Designer criativo e talentoso para se juntar ao nosso time! Se você é apaixonado por design, tem um olhar atento aos detalhes e está sempre por dentro das tendências digitais, essa oportunidade é para você.
-
-                                Responsabilidades:
-                                
-                                Desenvolver layouts e interfaces para websites, blogs, landing pages e aplicativos web;
-                                Criar elementos gráficos e visuais que proporcionem uma experiência de usuário (UX) intuitiva e atrativa;
-                                Colaborar com desenvolvedores para garantir que os designs sejam implementados corretamente e funcionem de forma responsiva em todos os dispositivos;
-                                Realizar melhorias e atualizações de design em projetos existentes, com foco em otimização de performance e acessibilidade;
-                                Garantir consistência visual, alinhando o design com a identidade visual e estratégia de marca;
-                                Manter-se atualizado com as melhores práticas de design web, novas ferramentas e tecnologias.</p>
-
-                            <blockquote>
-                                <h1 style="font-size: 40px;">REQUISITOS</h1>
-                               <li style="font-size: 15px;">
-                                Experiência comprovada na função com portfólio;
-                               </li>
-                               <li style="font-size: 15px;">
-                                Experiência comprovada na função com portfólio;
-                               </li>
-                               <li style="font-size: 15px;">
-                                Experiência comprovada na função com portfólio;
-                               </li>
-                               <li style="font-size: 15px;">
-                                Experiência comprovada na função com portfólio;
-                               </li>
-                               <li style="font-size: 15px;">
-                                Experiência comprovada na função com portfólio;
-                               </li>
-                            </blockquote>
+                            <p><%= vaga.descricao %></p> 
 
                             <div class="row my-4">
                                 <div class="col-lg-6 col-md-6 col-12">
-                                    <img src="images/businesswoman-using-tablet-analysis.jpg" class="topics-detail-block-image img-fluid">
+                                    <img src="/images/businesswoman-using-tablet-analysis.jpg" class="topics-detail-block-image img-fluid">
                                 </div>
-
                             </div>
                         </div>
-
                     </div>
                 </div>
             </section>
-
 
             <section class="section-padding section-bg">
                 <div class="container">
                     <div class="row justify-content-center">
-
                         <div class="col-lg-5 col-12">
-                            <img src="images/rear-view-young-college-student.jpg" class="newsletter-image img-fluid" alt="">
+                            <img src="/images/rear-view-young-college-student.jpg" class="newsletter-image img-fluid" alt="">
                         </div>
-
                         <div class="col-lg-5 col-12 subscribe-form-wrap d-flex justify-content-center align-items-center">
                             <form class="custom-form subscribe-form" action="#" method="post" role="form">
                                 <h4 class="mb-4 pb-2">Gostou da vaga?</h4>
                                 <div class="col-lg-12 col-12">
-                                    <button type="submit" class="form-control">Entregar o curriculo</button>
+                                    <button type="submit" class="form-control">Entregar o currículo</button>
                                 </div>
                             </form>
                         </div>
-
                     </div>
                 </div>
             </section>
+
         </main>
-		
 
         <!-- JAVASCRIPT FILES -->
         <script src="js/jquery.min.js"></script>

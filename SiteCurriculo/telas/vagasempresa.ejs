@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Candidatos</title>
+
+    <!-- Arquivos CSS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans&display=swap" rel="stylesheet">
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
+    <link href="./css/bootstrap-icons.css" rel="stylesheet">
+    <link href="./css/templatemo-topic-listing.css" rel="stylesheet">
+    <style>
+        .candidates-section {
+            padding: 60px 0;
+            background-color: #f8f9fa;
+        }
+
+        .candidates-section h2 {
+            color: #333;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 40px;
+        }
+
+        /* Estilo da tabela */
+        .table {
+            width: 100%;
+            margin-bottom: 1rem;
+            color: #212529;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        .table thead {
+            background-color: #343a40;
+            color: white;
+        }
+
+        .table thead th {
+            padding: 12px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .table tbody td {
+            padding: 12px;
+            vertical-align: middle;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .btn-primary, .btn-danger, .btn-info {
+            padding: 8px 16px;
+            border-radius: 4px;
+            margin: 8px;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-block;
+            color: white;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+
+        .btn-primary:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+
+        .btn-info {
+            background-color: #17a2b8;
+            border-color: #17a2b8;
+        }
+
+        .btn-info:hover {
+            background-color: #138496;
+            border-color: #117a8b;
+        }
+
+        /* Navbar Escura */
+        .navbar {
+            background-color: #343a40;
+            padding: 10px 0;
+        }
+
+        .navbar a {
+            color: #ffffff !important;
+        }
+
+        .navbar .navbar-brand span {
+            color: #ffffff;
+        }
+
+        .navbar-nav .nav-link {
+            color: #ffffff !important;
+            font-weight: 600;
+            padding: 10px 20px;
+        }
+
+        .navbar .navbar-toggler-icon {
+            background-color: white;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #007BFF !important;
+        }
+
+        .navbar .navbar-toggler {
+            border: none;
+        }
+
+        /* Ajustes no logo */
+        .navbar-brand img {
+            height: 50px;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background-color: #007bff;
+            padding: 100px 0;
+            color: white;
+            text-align: center;
+        }
+
+        .hero-section h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .hero-section h6 {
+            font-size: 1.25rem;
+            font-weight: 400;
+            margin-top: 10px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="./images/Logo_Emprga_Aí-removebg-preview.png" alt="Logo da Empresa" style="height: 50px;">
+                <span>Emprega aí</span>
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-lg-5 me-lg-auto">
+                    <li class="nav-item">
+                        <a class="nav-link click-scroll" href="#section_1">Início</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link click-scroll" href="#section_2">Suas Vagas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link click-scroll" href="contact.html">Nos contate</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section d-flex justify-content-center align-items-center" id="section_1">
+        <div class="container text-center">
+            <h1 class="text-white">EMPREGA AÍ!</h1>
+            <h6 class="text-white">Entrega sua vaga aí, que empregamos por aqui!</h6>
+        </div>
+    </section>
+
+    <!-- Candidatos Section -->
+    <section class="candidates-section section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center mb-4">
+                    <h2>Vagas abertas</h2>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Título</th>
+                                <th>Descrição</th>
+                                <th>Categoria</th>
+                                <th>Cidade</th>
+                                <th>Data de Fechamento</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% vagas.forEach(vaga => { %>
+                                <tr>
+                                    <td><%= vaga.titulo %></td>
+                                    <td><%= vaga.descricao %></td>
+                                    <td><%= vaga.categoria %></td>
+                                    <td><%= vaga.cidade %></td>
+                                    <td><%= vaga.data_fechamento %></td>
+                                    <td>
+                                        <a href="/editarvaga/<%= vaga.id_vaga %>" class="btn btn-sm btn-primary">Editar</a>
+                                        <a href="/deletar-vaga/<%= vaga.id_vaga %>" class="btn btn-sm btn-danger">Deletar</a>
+                                        <a href="/candidatos/<%= vaga.id_vaga %>" class="btn btn-sm btn-info">Ver Candidatos</a>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
