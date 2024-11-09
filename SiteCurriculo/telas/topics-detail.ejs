@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>Vaga de emprego</title>
+
+        <!-- CSS FILES -->        
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans&display=swap" rel="stylesheet">
+        <link href="/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/css/bootstrap-icons.css" rel="stylesheet">
+        <link href="/css/templatemo-topic-listing.css" rel="stylesheet">
+        <style>
+            .navbar{
+                background-color: rgb(117, 210, 196);
+            }
+        </style>
+    </head>
+    
+    <body id="top">
+
+        <main>
+
+            <nav class="navbar navbar-expand-lg">
+                <div class="container">
+                    <a class="navbar-brand" href="/">
+                        <img src="/images/Logo_Emprga_Aí-removebg-preview.png" alt="Logo da Empresa" style="height: 50px;">
+                        <span>Emprega aí</span>
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ms-lg-5 me-lg-auto">
+                            <li class="nav-item">
+                                <a class="nav-link click-scroll" href="/">Início</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link click-scroll" href="#section_2">Vagas disponíveis</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link click-scroll" href="/logout">Logout</a>
+                            </li>
+                        </ul>
+                        <div style="font-family: Verdana, Geneva, Tahoma, sans-serif;">
+                            <% if (usuario) { %>
+                                <span>Perfil: <%= usuario.nome %></span> <!-- Exibe o nome do usuário logado -->
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <header class="site-header d-flex flex-column justify-content-center align-items-center">
+                <div class="container">
+                    <div class="row justify-content-center align-items-center">
+                        <div class="col-lg-5 col-12 mb-5">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="/">Homepage</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page"><%= vaga.categoria %></li>
+                                </ol>
+                            </nav>
+                            <h2 class="text-white"><%= vaga.titulo %></h2> <!-- Nome da vaga -->
+                        </div>
+                        <div class="col-lg-5 col-12">
+                            <div class="topics-detail-block bg-white shadow-lg">
+                                <img src="/images/topics/undraw_Remote_design_team_re_urdx.png" class="topics-detail-block-image img-fluid">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <section class="topics-detail-section section-padding" id="topics-detail">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-12 m-auto">
+                            <h3 class="mb-4">Descrição da vaga</h3>
+                            <p><%= vaga.descricao %></p> 
+
+                            <div class="row my-4">
+                                <div class="col-lg-6 col-md-6 col-12">
+                                    <img src="/images/businesswoman-using-tablet-analysis.jpg" class="topics-detail-block-image img-fluid">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section-padding section-bg">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-5 col-12">
+                            <img src="/images/rear-view-young-college-student.jpg" class="newsletter-image img-fluid" alt="">
+                        </div>
+                        <div class="col-lg-5 col-12 subscribe-form-wrap d-flex justify-content-center align-items-center">
+                            <form class="custom-form subscribe-form" action="/enviar-candidatura" method="post" role="form">
+                                <h4 class="mb-4 pb-2">Gostou da vaga?</h4>
+                            
+                                <!-- Campo oculto para passar o ID da Vaga -->
+                                <input type="hidden" name="id_vaga" value="<%= vaga.id_vaga %>">
+                            
+                                <!-- Campo para o currículo -->
+                                <div class="form-group mb-3">
+                                    <label class="text-center" for="curriculo">Currículo</label><br>
+                                    <textarea id="curriculo" name="curriculo" rows="4" placeholder="Cole seu currículo aqui"></textarea>
+                                </div>
+                            
+                                <div class="col-lg-12 col-12">
+                                    <button type="submit" class="form-control">Entregar o currículo</button>
+                                </div>
+                            </form>                            
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- JAVASCRIPT FILES -->
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.bundle.min.js"></script>
+        <script src="js/jquery.sticky.js"></script>
+        <script src="js/custom.js"></script>
+
+    </body>
+</html>

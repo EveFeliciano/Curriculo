@@ -178,7 +178,7 @@
             <nav class="navbar navbar-expand-lg">
                 <div class="container">
                     <a class="navbar-brand" href="index.html">
-                        <img src="../public/img/Logo_Emprga_Aí-removebg-preview.png" alt="Logo da Empresa" style="height: 50px;">
+                        <img src="/images/Logo_Emprga_Aí-removebg-preview.png" alt="Logo da Empresa" style="height: 50px;">
                         <span>Emprega aí</span>
                     </a>
 
@@ -190,7 +190,7 @@
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav ms-lg-5 me-lg-auto">
                             <li class="nav-item">
-                                <a class="nav-link click-scroll" href="index.html">Início</a>
+                                <a class="nav-link click-scroll" href="/">Início</a>
                             </li>
 
                             <li class="nav-item">
@@ -212,7 +212,7 @@
 
                         <div class="col-lg-5 col-12 mb-5"></div>
 
-                            <h2 class="text-white">Bem vindo(a)<br>Nome Sobrenome</h2>
+                            <h2 class="text-white">Bem vindo(a)<br><%= usuario.nome %></h2>
 
                         </div>
 
@@ -227,90 +227,40 @@
 
             <div class="profile-container">
                 <div class="profile-header">
-                    <!-- Imagem de perfil do usuário -->
-                    <img src="https://via.placeholder.com/100" alt="Foto de perfil do usuário" id="profilePic">
-                    <span class="change-photo-text">Trocar Foto</span>
-                    <h2>Nome do Usuário</h2>
+                    <h2><%= usuario.nome %></h2>
                 </div>
             
                 <div class="upload-section">
                     <h3>Enviar Documentos</h3>
                     <!-- Formulário de upload de foto de perfil e currículo -->
                     <form action="/upload" method="POST" enctype="multipart/form-data">
-                        <!-- Campo para a foto de perfil -->
-                        <input type="file" id="uploadPhoto" name="fotoPerfil" accept="image/*">
-            
-                        <!-- Campo para o upload do currículo -->
-                        <label for="curriculo">Upload do Currículo:</label>
+                        <label for="curriculo">Upload do Currículo: .pdf, .doc ou .docx</label>
                         <input type="file" name="curriculo" accept=".pdf, .doc, .docx"><br><br>
-            
-                        <!-- Botão para enviar os arquivos -->
                         <button type="submit">Enviar Documentos</button>
-                    </form>
+                    </form>                    
                 </div>
                 
                 <center><h1 style="font-size: 30px; margin-top: 50px;">Suas Vagas</h1></center>
 
-                <div class="job-card">
-                    <h3>Desenvolvedor Web</h3>
-                    <p><strong>Empresa:</strong> Anonima</p>
-                    <p><strong>Localização:</strong> São Paulo, SP</p>
-                    <p><strong>Data de Cadastro:</strong> 05/11/2024</p>
-                    <p><strong>Status:</strong> Em análise</p>
-                    <a href="#" class="status-btn">Ver Detalhes</a>
-                </div>
-        
+                <% if (vagas && vagas.length > 0) { %>
+                    <% vagas.forEach(function(vaga) { %>
                         <div class="job-card">
-                    <h3>Desenvolvedor Web</h3>
-                    <p><strong>Empresa:</strong> Tech Innovators</p>
-                    <p><strong>Localização:</strong> São Paulo, SP</p>
-                    <p><strong>Data de Cadastro:</strong> 05/11/2024</p>
-                    <p><strong>Status:</strong> Em análise</p>
-                    <a href="#" class="status-btn">Ver Detalhes</a>
-                </div>
-            </div>
-
-
-            
-            
-
+                            <h3><%= vaga.titulo %></h3>
+                            <p><strong>Empresa:</strong> <%= vaga.empresa %></p>
+                            <p><strong>Localização:</strong> <%= vaga.cidade %>, <%= vaga.estado %></p>
+                            <p><strong>Data de Cadastro:</strong> <%= vaga.data_publicacao.toLocaleDateString() %></p>
+                            <p><strong>Status:</strong> Em análise</p>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <p class="text-center">Você ainda não se inscreveu em nenhuma vaga.</p>
+                <% } %>
         </main>
-		
-    </body>
-
-    <script>
-        // Seleciona a imagem do perfil e o campo de upload
-        const profilePic = document.getElementById('profilePic');
-        const uploadPhoto = document.getElementById('uploadPhoto');
     
-        // Adiciona um evento de clique na imagem
-        profilePic.addEventListener('click', function() {
-            // Simula o clique no campo de upload de arquivo
-            uploadPhoto.click();
-        });
-    
-        // Opcional: Pré-visualização da imagem escolhida
-        uploadPhoto.addEventListener('change', function(event) {
-            if (event.target.files.length > 0) {
-                const file = event.target.files[0];
-                const reader = new FileReader();
-    
-                reader.onload = function(e) {
-                    // Atualiza a imagem de perfil com a nova imagem
-                    profilePic.src = e.target.result;
-                };
-    
-                // Lê a imagem como uma URL de dados
-                reader.readAsDataURL(file);
-            }
-        });
-    </script>
-
-
         <!-- JAVASCRIPT FILES -->
         <script src="js/jquery.min.js"></script>
         <script src="js/bootstrap.bundle.min.js"></script>
         <script src="js/jquery.sticky.js"></script>
         <script src="js/custom.js"></script>
-
-    
+    </body>
+</html>
