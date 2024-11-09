@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>Candidatos para a Vaga</title>
+
+        <!-- CSS FILES -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans&display=swap" rel="stylesheet">
+        <link href="/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/css/bootstrap-icons.css" rel="stylesheet">
+        <link href="/css/templatemo-topic-listing.css" rel="stylesheet">
+    </head>
+
+    <style>
+        /* Estilo para o container do cartão */
+        .job-card {
+            width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+            background-color: #fff;
+        }
+
+        /* Título da vaga */
+        .job-card h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        /* Informações sobre o candidato */
+        .job-card p {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        /* Estilo para o botão de status */
+        .status-btn {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 4px;
+            background-color: #28a745;
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        /* Mudar cor no hover */
+        .status-btn:hover {
+            background-color: #218838;
+        }
+
+        /* Responsivo */
+        @media (max-width: 600px) {
+            .job-card {
+                width: 90%;
+            }
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .profile-container {
+            width: 60%;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .profile-header img {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            cursor: pointer;
+        }
+
+        .change-photo-text {
+            display: none;
+            position: absolute;
+            top: 75px;
+            left: 10px;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .profile-header img:hover + .change-photo-text {
+            display: block;
+        }
+
+        .profile-header h2 {
+            font-size: 24px;
+            margin: 0;
+            margin-left: 20px;
+        }
+
+        .profile-info {
+            margin-bottom: 20px;
+        }
+
+        .profile-info p {
+            font-size: 16px;
+            color: #555;
+            margin: 5px 0;
+        }
+
+        .upload-section {
+            border-top: 1px solid #ccc;
+            padding-top: 20px;
+        }
+
+        .upload-section h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .upload-section input[type="file"] {
+            display: inline-block; /* Mostra o campo de upload de currículo */
+        }
+
+        .upload-section label {
+            display: block;
+            margin-top: 10px;
+        }
+
+        .upload-section button {
+            display: block;
+            margin-top: 10px;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .upload-section button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    
+    <body id="top">
+
+        <main>
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <div class="container">
+                    <a class="navbar-brand" href="/">
+                        <img src="/images/Logo_Emprga_Aí-removebg-preview.png" alt="Logo da Empresa" style="height: 50px;">
+                        <span>Emprega aí</span>
+                    </a>
+
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ms-lg-5 me-lg-auto">
+                            <li class="nav-item">
+                                <a class="nav-link click-scroll" href="/">Início</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="profile-container">
+                <div class="profile-header">
+                    <h2 class="text-center">Candidatos</h2>
+                </div>
+
+                <div class="candidatos-list">
+                    <% if (candidatos && candidatos.length > 0) { %>
+                        <% candidatos.forEach(function(candidato) { %>
+                            <div class="job-card">
+                                <h3><%= candidato.nome %></h3>
+                            </div>
+                        <% }); %>
+                    <% } else { %>
+                        <p class="text-center">Nenhum candidato inscrito até o momento.</p>
+                    <% } %>
+                </div>
+            </div>
+        </main>
+ 
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.bundle.min.js"></script>
+        <script src="js/jquery.sticky.js"></script>
+        <script src="js/custom.js"></script>
+    </body>
+</html>

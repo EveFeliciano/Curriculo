@@ -52,9 +52,8 @@
                             <li class="nav-item">
                                 <a class="nav-link click-scroll" href="#section_2">Vagas disponíveis</a>
                             </li>
-
                             <li class="nav-item">
-                                <a class="nav-link click-scroll" href="contact.html">Nos contate</a>
+                                <a class="nav-link click-scroll" href="/logout">Logout</a>
                             </li>
                         </ul>
 
@@ -77,94 +76,46 @@
 
                             <h6 class="text-center">Entrega seu curriculo aí, que te empregamos aqui!</h6>
 
-                            <form method="get" class="custom-form mt-4 pt-2 mb-lg-0 mb-5" role="search">
+                            <form method="get" action="/" class="custom-form mt-4 pt-2 mb-lg-0 mb-5" role="search">
                                 <div class="input-group input-group-lg">
-                                    <span class="input-group-text bi-search" id="basic-addon1">
-                                        i
-                                    </span>
-
-                                    <input name="keyword" type="search" class="form-control" id="keyword" placeholder="Design, Code, Marketing, Finance ..." aria-label="Search">
-
+                                    <input name="keyword" type="search" class="form-control" id="keyword" placeholder="Digite uma categoria! Ex: Design" aria-label="Search">
                                     <button type="submit" class="form-control">Pesquisar</button>
                                 </div>
-                            </form>
+                            </form>                            
                         </div>
-                        <section>
-                            <h6 class="text-center" style="font-size: 30px; margin-top: 25px; color: aliceblue; font-style: inherit;">VAGAS QUE PODEM TE INTERESSAR:</h6>
-                        </section>
                     </div>
                 </div>
             </section>
 
 
-            <section class="featured-section">
+            <section style="background-color: rgb(100, 188, 159); padding: 20px;">
                 <div class="container">
                     <div class="row justify-content-center">
-
-                        <div class="col-lg-4 col-12 mb-4 mb-lg-0">
-                            <div class="custom-block bg-white shadow-lg">
-                                <a href="topics-detail.html">
-                                    <div class="d-flex">
-                                        <div>
-                                            <h5 class="mb-2">Web Design</h5>
-
-                                            <p class="mb-0">Estamos em busca de um Web Designer criativo e talentoso para se juntar ao nosso time! Se você é apaixonado por design, tem um olhar atento aos detalhes e está sempre por dentro das tendências digitais, essa oportunidade é para você.</p>
+                        <% if (vagas && vagas.length > 0) { %>  <!-- Verifica se vagas tem elementos -->
+                            <!-- Item da vaga encontrada -->
+                            <div class="row">
+                                <% vagas.forEach((vaga) => { %>
+                                    <div class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-0">
+                                        <div class="custom-block bg-white shadow-lg">
+                                            <a href="/topics-detail/<%= vaga.id_vaga %>">
+                                                <div class="d-flex">
+                                                    <div>
+                                                        <h5 class="mb-2"><%= vaga.titulo %></h5>
+                                                        <p class="mb-0"><%= vaga.descricao %></p>
+                                                    </div>
+                                                </div>
+                                                <img src="/images/topics/undraw_Remote_design_team_re_urdx.png" class="custom-block-image img-fluid" alt="">
+                                            </a>
                                         </div>
-
-                                        <span class="badge bg-design rounded-pill ms-auto">4d</span>
                                     </div>
-
-                                    <img src="images/topics/undraw_Remote_design_team_re_urdx.png" class="custom-block-image img-fluid" alt="">
-                                </a>
+                                <% }); %>
                             </div>
-                        </div>
-
-                        <div class="col-lg-6 col-12">
-                            <div class="custom-block custom-block-overlay">
-                                <div class="d-flex flex-column h-100">
-                                    <img src="images/businesswoman-using-tablet-analysis.jpg" class="custom-block-image img-fluid" alt="">
-
-                                    <div class="custom-block-overlay-text d-flex">
-                                        <div>
-                                            <h5 class="text-white mb-2">Finance</h5>
-
-                                            <p class="text-white">Topic Listing Template includes homepage, listing page, detail page, and contact page. You can feel free to edit and adapt for your CMS requirements.</p>
-
-                                            <a href="topics-detail.html" class="btn custom-btn mt-2 mt-lg-3">Learn More</a>
-                                        </div>
-
-                                        <span class="badge bg-finance rounded-pill ms-auto">25</span>
-                                    </div>
-
-                                    <div class="social-share d-flex">
-                                        <p class="text-white me-4">Share:</p>
-
-                                        <ul class="social-icon">
-                                            <li class="social-icon-item">
-                                                <a href="#" class="social-icon-link bi-twitter"></a>
-                                            </li>
-
-                                            <li class="social-icon-item">
-                                                <a href="#" class="social-icon-link bi-facebook"></a>
-                                            </li>
-
-                                            <li class="social-icon-item">
-                                                <a href="#" class="social-icon-link bi-pinterest"></a>
-                                            </li>
-                                        </ul>
-
-                                        <a href="#" class="custom-icon bi-bookmark ms-auto"></a>
-                                    </div>
-
-                                    <div class="section-overlay"></div>
-                                </div>
-                            </div>
-                        </div>
-
+                        <% } else { %>
+                            <p class="text-white text-center">Faça uma pesquisa de categoria nova para ver as vagas disponíveis!</p>
+                        <% } %>
                     </div>
                 </div>
-            </section>
-
+            </section>                        
 
             <section class="explore-section section-padding" id="section_2">
                 <div class="container">
@@ -222,7 +173,6 @@
                                         <% }) %>
                                     </div>
                                 </div>
-            
                                 <!-- Tab Marketing -->
                                 <div class="tab-pane fade" id="marketing-tab-pane" role="tabpanel" aria-labelledby="marketing-tab" tabindex="1">
                                     <div class="row">
@@ -312,8 +262,6 @@
                     </div>
                 </div>
             </section>
-
-                        <center><p class="copyright-text mt-lg-5 mt-4">Copyright © 2048 Topic Listing Center. All rights reserved.</center>
                         
                     </div>
 

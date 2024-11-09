@@ -1,9 +1,10 @@
 const express = require('express');
 const db = require('./database/config')
 const session = require('express-session');
-const { VerificaLogin, VerificaLoginAdmin, AddCandidato, AddEmpresa, VerificaEmpresa, AddVaga, GetVagas, DeleteVagas, EditarVaga, GetVagasPorCategoria, GetVagaPorId } = require('./database/functionsSql');
+const { VerificaLogin, VerificaLoginAdmin, AddCandidato, AddEmpresa, VerificaEmpresa, AddVaga, GetVagas, DeleteVagas, EditarVaga, GetVagasPorCategoria, GetVagaPorId, AddCandidatura } = require('./database/functionsSql');
 const app = express();
 const path = require('path');
+const multer = require('multer');
 
 // Middleware para gerenciar a sessão
 app.use(session({
@@ -36,45 +37,57 @@ function checarAutenticacao(req, res, next) {
 app.get('/', checarAutenticacao, async (req, res) => {
     const tipoUsuario = req.session.tipoUsuario;
     const usuario = req.session.usuarioLogado;
-    console.log('Sessão em /:', req.session); // Verifica a sessão na rota principal
-
+    const palavraChave = req.query.keyword; // Palavra-chave da pesquisa
+    console.log(palavraChave);
+    
     try {
-        // Buscando as vagas por categoria
+        // Buscando vagas por categoria
         const designVagas = await GetVagasPorCategoria('design');
         const marketingVagas = await GetVagasPorCategoria('marketing');
         const financesVagas = await GetVagasPorCategoria('finance');
         const musicVagas = await GetVagasPorCategoria('music');
         const educationVagas = await GetVagasPorCategoria('education');
 
-        if (tipoUsuario === 'candidato') {
-            res.render('index', {
-                usuario,
-                designVagas,
-                marketingVagas,
-                financesVagas,
-                musicVagas,
-                educationVagas,
-            });
-        } else if (tipoUsuario === 'empresa') {
-            res.render('perfilempresa', { usuario });
-        } else if (tipoUsuario === 'admin') {
-            res.render('index', {
-                usuario,
-                designVagas,
-                marketingVagas,
-                financesVagas,
-                musicVagas,
-                educationVagas,
-            });
-        } else {
-            res.redirect('/login');
+        let vagas = []; // Define vagas como um array vazio por padrão
+
+        // Se houver uma palavra-chave, busca uma vaga correspondente
+        if (palavraChave) {
+            vagas = await GetVagasPorCategoria(palavraChave); 
+            console.log(vagas)
         }
+
+        // Renderiza com as vagas encontradas ou null
+        if (tipoUsuario === "empresa"){
+            res.render('perfilempresa', {
+                usuario
+            });
+        }else if(tipoUsuario === "candidato"){
+            res.render('index', {
+                usuario,
+                designVagas,
+                marketingVagas,
+                financesVagas,
+                musicVagas,
+                educationVagas,
+                vagas // Passa as vagas encontradas para a página
+            });
+        }else{
+            res.render('index', {
+                usuario,
+                designVagas,
+                marketingVagas,
+                financesVagas,
+                musicVagas,
+                educationVagas,
+                vagas // Passa as vagas encontradas para a página
+            });
+        }
+        
     } catch (error) {
         console.error('Erro ao buscar vagas:', error);
         res.status(500).send('Erro ao carregar as vagas.');
     }
 });
-
 
 // Rota de login
 app.get('/login', (req, res) => {
@@ -99,6 +112,8 @@ app.get('/topics-detail/:id', async (req, res) => {
         res.status(500).send('Erro ao carregar os detalhes da vaga.');
     }
 });
+
+
 
 app.get('/vagas', async (req, res) => {
     try {
@@ -169,7 +184,96 @@ app.post('/login', (req, res) => {
         });
 });
 
+// Configuração do multer para salvar o arquivo no diretório 'uploads'
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/'); // Diretório onde os arquivos serão salvos
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + path.extname(file.originalname)); // Nome do arquivo único
+    }
+});
 
+const upload = multer({ storage: storage });
+
+// Rota de upload
+app.post('/upload', upload.single('curriculo'), function (req, res) {
+    if (!req.file) {
+        return res.status(400).send('Nenhum arquivo enviado.');
+    }
+
+    const curriculoCaminho = req.file.path; // Caminho do arquivo no servidor
+    const idCandidato = req.session.usuarioLogado.id_candidato;
+
+    // Verifique o caminho do arquivo e o ID do candidato
+    console.log("Caminho do arquivo:", curriculoCaminho);
+    console.log("ID do Candidato:", idCandidato);
+
+    if (!curriculoCaminho || !idCandidato) {
+        return res.status(400).send('Dados insuficientes para atualizar o currículo.');
+    }
+
+    // Atualizar o caminho do arquivo na tabela Candidato
+    db.query('UPDATE Candidato SET curriculo = ? WHERE id_candidato = ?', 
+    [curriculoCaminho, idCandidato], function (err, result) {
+        if (err) {
+            console.error("Erro ao atualizar o banco de dados:", err);
+            return res.status(500).send("Erro ao atualizar o banco de dados");
+        }
+
+        // Verifique o resultado da atualização
+        console.log("Resultado da atualização:", result);
+
+        if (result.affectedRows === 0) {
+            return res.status(400).send('Nenhum candidato encontrado para atualizar.');
+        }
+
+        res.render('perfil');
+    });
+});
+
+app.post('/enviar-candidatura', async (req, res) => {
+    const { id_vaga, curriculo } = req.body; // Recebe os dados enviados (id_vaga e curriculo)
+
+    // Supondo que o id_candidato vem de uma sessão ou autenticação
+    const id_candidato = req.session.usuarioLogado.id_candidato; // ou qualquer outra lógica para obter o id_candidato
+
+    if (!id_candidato || !id_vaga || !curriculo) {
+        return res.status(400).json({ success: false, message: 'Campos obrigatórios faltando: id_candidato, id_vaga ou curriculo' });
+    }
+
+    const candidatura = {
+        id_candidato, // ID do candidato vindo da sessão ou de outra fonte
+        id_vaga,
+        curriculo
+    };
+
+    try {
+        // Chama a função AddCandidatura com os dados recebidos
+        const result = await AddCandidatura(candidatura);
+
+        if (result.success) {
+            return res.status(200).json(result); // Retorna sucesso
+        } else {
+            return res.status(400).json(result); // Retorna erro com a mensagem
+        }
+    } catch (error) {
+        console.error("Erro ao enviar candidatura:", error);
+        return res.status(500).json({ success: false, message: "Erro interno ao enviar candidatura." });
+    }
+});
+
+app.get('/tipo-cadastro', (req, res) => {
+    res.sendFile(path.join(__dirname, 'telas', 'empresa-ou-candidato.html'));
+});
+
+app.get('/cadastro', (req, res) => {
+    res.sendFile(path.join(__dirname, 'telas', 'cadastro.html'));
+});
+
+app.get('/cadastro-empresa', (req, res) => {
+    res.sendFile(path.join(__dirname, 'telas', 'cadastro-empresa.html'));
+});
 
 // Rota de logout
 app.get('/logout', (req, res) => {
@@ -237,7 +341,27 @@ app.get('/editarvaga/:id', async (req, res) => {
     }
 });
 
-
+// Rota para exibir o perfil do candidato
+app.get('/perfil', checarAutenticacao, async (req, res) => {
+    const idCandidato = req.session.id;
+    const usuario = req.session.usuarioLogado;
+    try {
+      const vagas = await db.query(`
+        SELECT v.titulo, v.cidade, v.data_publicacao, v.estado, v.categoria, e.nome AS empresa
+        FROM Vaga v
+        JOIN Empresa e ON v.id_empresa = e.id_empresa
+        JOIN Candidatura c ON c.id_vaga = v.id_vaga
+        JOIN inscreve i ON i.id_candidatura = c.id_candidatura  -- Verificando as candidaturas
+        WHERE i.id_candidato = ?
+      `, [idCandidato]);
+  
+      res.render('perfil', { vagas, usuario});
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Erro ao buscar vagas');
+    }
+});
+  
 // Cadastro de Candidato
 app.post('/cadastro', async (req, res) => {
     const { email, username, dataNasc, cpf, telefone, password } = req.body;
@@ -380,6 +504,33 @@ app.post('/editar-vaga/:id', async (req, res) => {
         console.error(err);
         res.status(500).send('Erro ao atualizar a vaga');
     }
+});
+
+// Rota para exibir os candidatos de uma vaga
+app.get('/candidatos/:idVaga', (req, res) => {
+    const { idVaga } = req.params;
+    const EmpresaId = req.session.usuarioLogado.id_empresa;
+
+    // Verificar se a vaga existe e pertence à empresa logada
+    db.query(`
+        SELECT V.id_empresa, C.id_candidato, C.nome, C.curriculo
+        FROM Vaga V
+        JOIN Candidatura Ca ON Ca.id_vaga = V.id_vaga
+        JOIN inscreve I ON I.id_candidatura = Ca.id_candidatura
+        JOIN Candidato C ON I.id_candidato = C.id_candidato
+        WHERE V.id_vaga = ? AND V.id_empresa = ?;
+        `, 
+        [idVaga, EmpresaId], 
+        (err, result) => {
+            if (err) {
+                console.error('Erro ao consultar o banco de dados:', err);
+                return res.status(500).send('Erro ao acessar o banco de dados');
+            }
+
+            // Renderizar a página com os candidatos da vaga
+            res.render('candidatos', { candidatos: result});
+        }
+    );
 });
 
 // Inicializa o servidor

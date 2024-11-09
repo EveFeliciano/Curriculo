@@ -360,7 +360,63 @@ const GetVagaPorId = async (id) => {
     });
 };
 
+const AddCandidatura = async (candidatura) => {
+    const requiredFields = ['id_candidato', 'id_vaga', 'curriculo'];
+    for (const field of requiredFields) {
+        if (!candidatura[field]) {
+            throw new Error(`Campo obrigatório faltando: ${field}`);
+        }
+    }
 
+    try {
+        // Verifica se o candidato existe
+        const candidatoExists = await new Promise((resolve, reject) => {
+            db.query('SELECT id_candidato FROM Candidato WHERE id_candidato = ?', [candidatura.id_candidato], (err, results) => {
+                if (err) return reject(new Error(`Erro ao verificar candidato: ${err.message}`));
+                resolve(results.length > 0);
+            });
+        });
+
+        if (!candidatoExists) {
+            return { success: false, message: 'Candidato não encontrado.' };
+        }
+
+        // Verifica se a vaga existe
+        const vagaExists = await new Promise((resolve, reject) => {
+            db.query('SELECT id_vaga FROM Vaga WHERE id_vaga = ?', [candidatura.id_vaga], (err, results) => {
+                if (err) return reject(new Error(`Erro ao verificar vaga: ${err.message}`));
+                resolve(results.length > 0);
+            });
+        });
+
+        if (!vagaExists) {
+            return { success: false, message: 'Vaga não encontrada.' };
+        }
+
+        // Insere a candidatura sem o campo id_candidato
+        const result = await new Promise((resolve, reject) => {
+            const query = 'INSERT INTO Candidatura (id_vaga, curriculo, data_candidatura, status) VALUES (?, ?, NOW(), ?)';
+            db.query(query, [candidatura.id_vaga, candidatura.curriculo, 'em espera'], (err, result) => {
+                if (err) return reject(new Error(`Erro ao inserir candidatura: ${err.message}`));
+                resolve(result);
+            });
+        });
+
+        // Agora, insere o relacionamento na tabela inscreve
+        const inscreveResult = await new Promise((resolve, reject) => {
+            const query = 'INSERT INTO inscreve (id_candidatura, id_candidato) VALUES (?, ?)';
+            db.query(query, [result.insertId, candidatura.id_candidato], (err, result) => {
+                if (err) return reject(new Error(`Erro ao associar candidato à candidatura: ${err.message}`));
+                resolve(result);
+            });
+        });
+
+        return { success: true, id: result.insertId, message: 'Candidatura enviada com sucesso!' };
+
+    } catch (err) {
+        return { success: false, message: err.message };
+    }
+};
 
 //Aqui vai ficar todo o resto de funções pro site
 //Falta bastant coisa ainda
@@ -379,5 +435,6 @@ module.exports = {
     DeleteVagas,
     EditarVaga,
     GetVagasPorCategoria,
-    GetVagaPorId
+    GetVagaPorId,
+    AddCandidatura
 };
