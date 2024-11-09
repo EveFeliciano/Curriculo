@@ -44,9 +44,9 @@ app.get('/', checarAutenticacao, async (req, res) => {
         // Buscando vagas por categoria
         const designVagas = await GetVagasPorCategoria('design');
         const marketingVagas = await GetVagasPorCategoria('marketing');
-        const financesVagas = await GetVagasPorCategoria('finance');
-        const musicVagas = await GetVagasPorCategoria('music');
-        const educationVagas = await GetVagasPorCategoria('education');
+        const financesVagas = await GetVagasPorCategoria('finanças');
+        const musicVagas = await GetVagasPorCategoria('música');
+        const educationVagas = await GetVagasPorCategoria('educação');
 
         let vagas = []; // Define vagas como um array vazio por padrão
 
@@ -117,16 +117,16 @@ app.get('/topics-detail/:id', async (req, res) => {
 
 app.get('/vagas', async (req, res) => {
     try {
-        const designVagas = await GetVagasPorCategoria('Design');
-        const marketingVagas = await GetVagasPorCategoria('Marketing');
-        const financeVagas = await GetVagasPorCategoria('Finance');
-        const musicVagas = await GetVagasPorCategoria('Music');
-        const educationVagas = await GetVagasPorCategoria('Education');
+        const designVagas = await GetVagasPorCategoria('design');
+        const marketingVagas = await GetVagasPorCategoria('marketing');
+        const financesVagas = await GetVagasPorCategoria('finanças');
+        const musicVagas = await GetVagasPorCategoria('música');
+        const educationVagas = await GetVagasPorCategoria('educação');
 
         res.render('vagas', {
             designVagas,
             marketingVagas,
-            financeVagas,
+            financesVagas,
             musicVagas,
             educationVagas
         });
@@ -253,7 +253,7 @@ app.post('/enviar-candidatura', async (req, res) => {
         const result = await AddCandidatura(candidatura);
 
         if (result.success) {
-            return res.status(200).json(result); // Retorna sucesso
+            res.redirect('/');
         } else {
             return res.status(400).json(result); // Retorna erro com a mensagem
         }
