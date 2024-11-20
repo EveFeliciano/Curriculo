@@ -393,34 +393,54 @@ const AddCandidatura = async (candidatura) => {
             return { success: false, message: 'Vaga não encontrada.' };
         }
 
-        // Insere a candidatura sem o campo id_candidato
-        const result = await new Promise((resolve, reject) => {
-            const query = 'INSERT INTO Candidatura (id_vaga, curriculo, data_candidatura, status) VALUES (?, ?, NOW(), ?)';
-            db.query(query, [candidatura.id_vaga, candidatura.curriculo, 'em espera'], (err, result) => {
-                if (err) return reject(new Error(`Erro ao inserir candidatura: ${err.message}`));
-                resolve(result);
+        // Verifica se já existe uma candidatura do mesmo candidato para a vaga
+        const candidaturaExists = await new Promise((resolve, reject) => {
+            const query = 'SELECT c.id_candidatura FROM Candidatura c JOIN inscreve i ON c.id_candidatura = i.id_candidatura WHERE i.id_candidato = ? AND c.id_vaga = ?';
+            db.query(query, [candidatura.id_candidato, candidatura.id_vaga], (err, results) => {
+                if (err) return reject(new Error(`Erro ao verificar candidatura: ${err.message}`));
+                resolve(results.length > 0 ? results[0].id_candidatura : null);
             });
         });
 
-        // Agora, insere o relacionamento na tabela inscreve
-        const inscreveResult = await new Promise((resolve, reject) => {
-            const query = 'INSERT INTO inscreve (id_candidatura, id_candidato) VALUES (?, ?)';
-            db.query(query, [result.insertId, candidatura.id_candidato], (err, result) => {
-                if (err) return reject(new Error(`Erro ao associar candidato à candidatura: ${err.message}`));
-                resolve(result);
+        if (candidaturaExists) {
+            // Atualiza o currículo existente
+            const queryAtualizar = 'UPDATE Candidatura SET curriculo = ?, data_candidatura = NOW(), status = ? WHERE id_candidatura = ?';
+            await new Promise((resolve, reject) => {
+                db.query(queryAtualizar, [candidatura.curriculo, 'em espera', candidaturaExists], (err, result) => {
+                    if (err) return reject(new Error(`Erro ao atualizar candidatura: ${err.message}`));
+                    resolve(result);
+                });
             });
-        });
 
-        return { success: true, id: result.insertId, message: 'Candidatura enviada com sucesso!' };
+            return { success: true, id: candidaturaExists, message: 'Candidatura atualizada com sucesso!' };
+        } else {
+            // Insere uma nova candidatura
+            const result = await new Promise((resolve, reject) => {
+                const query = 'INSERT INTO Candidatura (id_vaga, curriculo, data_candidatura, status) VALUES (?, ?, NOW(), ?)';
+                db.query(query, [candidatura.id_vaga, candidatura.curriculo, 'em espera'], (err, result) => {
+                    if (err) return reject(new Error(`Erro ao inserir candidatura: ${err.message}`));
+                    resolve(result);
+                });
+            });
+
+            // Insere o relacionamento na tabela inscreve
+            const inscreveResult = await new Promise((resolve, reject) => {
+                const query = 'INSERT INTO inscreve (id_candidatura, id_candidato) VALUES (?, ?)';
+                db.query(query, [result.insertId, candidatura.id_candidato], (err, result) => {
+                    if (err) return reject(new Error(`Erro ao associar candidato à candidatura: ${err.message}`));
+                    resolve(result);
+                });
+            });
+
+            return { success: true, id: result.insertId, message: 'Candidatura enviada com sucesso!' };
+        }
 
     } catch (err) {
         return { success: false, message: err.message };
     }
 };
 
-//Aqui vai ficar todo o resto de funções pro site
-//Falta bastant coisa ainda
-//Última atualização 05/11 ---> terça-feira
+//Última atualização 19/11 ---> terça-feira
 
 //Aqui vai exportar TODAS as funções desse script
 module.exports = {

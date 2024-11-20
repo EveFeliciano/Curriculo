@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="icon" href="./images/MALAAZUL.png" type="image/x-icon">
+        <title>EMPREGA AI</title>
+
+        <link href="./css/bootstrap.min.css" rel="stylesheet">
+
+        <link href="./css/bootstrap-icons.css" rel="stylesheet">
+
+        <link href="./css/templatemo-topic-listing.css" rel="stylesheet">  
+
+        <!-- ARQUIVOS DO CSS -->        
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans&display=swap" rel="stylesheet">
+        
+        <style>
+            h1 {
+                text-align: center;
+                color: #333;
+                padding: 20px;
+                color: white;
+                margin-bottom: 30px;
+            }
+
+            /* Lista de Candidaturas */
+            .candidaturas-list {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 20px;
+                justify-content: center;
+            }
+
+            .navbar{
+                background-color: rgb(117, 210, 196);
+            }
+
+            /* Cartão de Candidatura */
+            .candidatura-card {
+                background-color: white;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                width: 300px;
+                padding: 20px;
+                text-align: center;
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+
+            /* Efeito de Hover */
+            .candidatura-card:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+            }
+
+            /* Título da Vaga */
+            .candidatura-card h3 {
+                font-size: 1.5rem;
+                color: #333;
+                margin-bottom: 10px;
+                word-wrap: break-word;
+                word-break: break-word; 
+                white-space: normal;
+            }
+
+            /* Texto de status e feedback */
+            .candidatura-card p {
+                font-size: 1rem;
+                color: #555;
+                margin: 5px 0;
+            }
+
+            .status-aprovado {
+                color: green;
+                font-weight: bold;
+            }
+
+            .status-reprovado {
+                color: red;
+                font-weight: bold;
+            }
+
+            .status-em-espera {
+                color: #ff8c00;
+                font-weight: bold;
+            }
+
+            .feedback {
+                font-style: italic;
+                color: #666;
+            }
+
+            p {
+                font-size: 1.2rem;
+                color: #777;
+                text-align: center;
+            }
+        </style>
+    </head>
+    
+    <body id="top">
+        <main>
+            <nav class="navbar navbar-expand-lg">
+                <div class="container">
+                    <a class="navbar-brand" href="/">
+                        <img src="./images/Logo_Emprga_Aí-removebg-preview.png" alt="Logo da Empresa" style="height: 50px;">
+                        <span>Emprega aí</span>
+                    </a>
+
+                    <div class="d-lg-none ms-auto me-4">
+                        <a href="" class="navbar-icon bi-person smoothscroll"></a>
+                    </div>
+    
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+    
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ms-lg-5 me-lg-auto">
+                            <li class="nav-item">
+                                <a class="nav-link click-scroll" href="/">Início</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link click-scroll" href="/inscricoes">Inscrições</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link click-scroll" href="/logout">Logout</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <section class="explore-section section-padding">
+                <div class="container">
+                    <h1>Vagas em que você se inscreveu</h1>
+                    <% if (candidaturas.length > 0) { %>
+                        <div class="candidaturas-list">
+                            <% candidaturas.forEach(function(candidatura) { %>
+                                <div class="candidatura-card">
+                                    <h3><%= candidatura.vaga %></h3>
+                                    <p>Status: <span class="<%= candidatura.status === 'aprovado' ? 'status-aprovado' : candidatura.status === 'reprovado' ? 'status-reprovado' : 'status-em-espera' %>"><%= candidatura.status %></span></p>
+                                    <p class="feedback"><%= candidatura.feedback || 'Nenhum feedback fornecido.' %></p>
+                                </div>
+                            <% }); %>
+                        </div>
+                    <% } else { %>
+                        <p>Você ainda não se inscreveu em nenhuma vaga.</p>
+                    <% } %>
+                </div>
+            </section>
+        </main>
+        </footer>
+
+
+        <!-- JAVASCRIPT FILES -->
+        <script src="./js/jquery.min.js"></script>
+        <script src="./js/bootstrap.bundle.min.js"></script>
+        <script src="./js/jquery.sticky.js"></script>
+        <script src="./js/click-scroll.js"></script>
+        <script src="./js/custom.js"></script>
+
+    </body>
+</html>

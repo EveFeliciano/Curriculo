@@ -153,6 +153,10 @@
             margin-top: 10px;
         }
 
+        a{
+            min-width: 150px;
+        }
+
     </style>
 </head>
 
@@ -222,9 +226,11 @@
                                     <td><%= vaga.cidade %></td>
                                     <td><%= vaga.data_fechamento %></td>
                                     <td>
-                                        <a href="/editarvaga/<%= vaga.id_vaga %>" class="btn btn-sm btn-primary">Editar</a>
-                                        <a href="/deletar-vaga/<%= vaga.id_vaga %>" class="btn btn-sm btn-danger">Deletar</a>
-                                        <a href="/candidatos/<%= vaga.id_vaga %>" class="btn btn-sm btn-info">Ver Candidatos</a>
+                                        <div class="buttons">
+                                            <a href="/editarvaga/<%= vaga.id_vaga %>" class="btn btn-sm btn-primary">Editar</a>
+                                            <a href="/deletar-vaga/<%= vaga.id_vaga %>" class="btn btn-sm btn-danger">Deletar</a>
+                                            <a href="/candidatos/<%= vaga.id_vaga %>" class="btn btn-sm btn-info">Ver Candidatos</a>
+                                        </div>
                                     </td>
                                 </tr>
                             <% }) %>
