@@ -248,7 +248,7 @@ const AddEmpresa = async (empresa) => {
 const VerificaLogin = (username, password) => {
     console.log("Verificando candidato com username:", username)
     return new Promise((resolve, reject) => {
-        db.query('SELECT * FROM candidato WHERE nome = ? AND senha = ?', [username, password], (err, result) => {
+        db.query('SELECT * FROM candidato WHERE email = ? AND senha = ?', [username, password], (err, result) => {
             if (err) reject(err);
             if (result.length > 0) {
                 resolve(result[0]);  // Se o login for bem-sucedido, retorna os dados do candidato
@@ -262,7 +262,7 @@ const VerificaLogin = (username, password) => {
 const VerificaLoginAdmin = (username, password) => {
     console.log("Verificando admin com username:", username)
     return new Promise((resolve, reject) => {
-        db.query('SELECT * FROM administrador WHERE nome = ? AND senha = ?', [username, password], (err, result) => {
+        db.query('SELECT * FROM administrador WHERE email = ? AND senha = ?', [username, password], (err, result) => {
             if (err) reject(err);
             if (result.length > 0) {
                 resolve(result[0]);  // Se o login for bem-sucedido, retorna os dados do candidato
@@ -276,7 +276,7 @@ const VerificaLoginAdmin = (username, password) => {
 const VerificaEmpresa = (username, password) => {
     console.log("Verificando empresa com username:", username)
     return new Promise((resolve, reject) => {
-        db.query('SELECT * FROM empresa WHERE nome = ? AND senha = ?', [username, password], (err, result) => {
+        db.query('SELECT * FROM empresa WHERE email = ? AND senha = ?', [username, password], (err, result) => {
             if (err) reject(err);
             if (result.length > 0) {
                 resolve(result[0]);  // Se o login for bem-sucedido, retorna os dados da empresa
