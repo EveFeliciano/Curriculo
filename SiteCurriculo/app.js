@@ -49,7 +49,7 @@ app.get('/', checarAutenticacao, async (req, res) => {
         const educationVagas = await GetVagasPorCategoria('educação');
 
         let vagas = []; // Define vagas como um array vazio por padrão
-
+        console.log('Finances:', financesVagas);
         // Se houver uma palavra-chave, busca uma vaga correspondente
         if (palavraChave) {
             vagas = await GetVagasPorCategoria(palavraChave); 
@@ -113,7 +113,40 @@ app.get('/topics-detail/:id', async (req, res) => {
     }
 });
 
+app.get('/inscricoes', checarAutenticacao, async (req, res) => {
+    const id_candidato = req.session.usuarioLogado.id_candidato; 
+    
+    if (!id_candidato) {
+        return res.status(400).json({ success: false, message: 'Usuário não autenticado' });
+    }
 
+    try {
+        const candidaturas = await new Promise((resolve, reject) => {
+            const query = `
+                SELECT Candidatura.id_candidatura, Vaga.titulo AS vaga, Candidatura.status, Candidatura.feedback
+                FROM Candidatura
+                JOIN Vaga ON Candidatura.id_vaga = Vaga.id_vaga
+                JOIN inscreve ON Candidatura.id_candidatura = inscreve.id_candidatura
+                WHERE inscreve.id_candidato = ?
+            `;
+            db.query(query, [id_candidato], (err, results) => {
+                if (err) return reject(new Error(`Erro ao buscar candidaturas: ${err.message}`));
+                resolve(results);
+            });
+        });
+
+        if (candidaturas.length === 0) {
+            return res.render('inscricoes', { candidaturas: [] });
+        }
+
+        // Renderiza a página com as candidaturas
+        res.render('inscricoes', { candidaturas });
+
+    } catch (error) {
+        console.error('Erro ao buscar candidaturas:', error);
+        return res.status(500).json({ success: false, message: 'Erro ao buscar candidaturas' });
+    }
+});
 
 app.get('/vagas', async (req, res) => {
     try {
@@ -122,7 +155,6 @@ app.get('/vagas', async (req, res) => {
         const financesVagas = await GetVagasPorCategoria('finanças');
         const musicVagas = await GetVagasPorCategoria('música');
         const educationVagas = await GetVagasPorCategoria('educação');
-
         res.render('vagas', {
             designVagas,
             marketingVagas,
@@ -513,7 +545,7 @@ app.get('/candidatos/:idVaga', (req, res) => {
 
     // Verificar se a vaga existe e pertence à empresa logada
     db.query(`
-        SELECT V.id_empresa, C.id_candidato, C.nome, C.curriculo
+        SELECT V.id_empresa, C.id_candidato, C.nome, Ca.curriculo, Ca.id_candidatura, Ca.status, Ca.feedback
         FROM Vaga V
         JOIN Candidatura Ca ON Ca.id_vaga = V.id_vaga
         JOIN inscreve I ON I.id_candidatura = Ca.id_candidatura
@@ -532,6 +564,34 @@ app.get('/candidatos/:idVaga', (req, res) => {
         }
     );
 });
+
+app.post('/atualizar-candidatura', async (req, res) => {
+    console.log(req.body);
+    const { id_candidatura, status } = req.body;
+
+    if (!id_candidatura || !status) {
+        return res.status(400).json({ success: false, message: "Parâmetros obrigatórios faltando." });
+    }
+
+    try {
+        // Atualiza o status e define como "respondido"
+        const query = `UPDATE Candidatura 
+                       SET status = ?, feedback = 'respondido'
+                       WHERE id_candidatura = ?`;
+        const result = await new Promise((resolve, reject) => {
+            db.query(query, [status, id_candidatura], (err, result) => {
+                if (err) return reject(new Error(`Erro ao atualizar candidatura: ${err.message}`));
+                resolve(result);
+            });
+        });
+
+        res.redirect('/vagasempresa');
+    } catch (error) {
+        console.error("Erro ao atualizar candidatura:", error);
+        res.status(500).json({ success: false, message: "Erro interno ao atualizar candidatura." });
+    }
+});
+
 
 // Inicializa o servidor
 app.listen(3000, () => {

@@ -162,6 +162,32 @@
         .upload-section button:hover {
             background-color: #0056b3;
         }
+
+        .buttons{
+            margin-top: 18px;
+            display:flex;
+            flex-direction: row;
+            gap: 12px;
+        }
+
+        .text-success {
+            color: green;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .text-danger {
+            color: red;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .text-warning {
+            color: orange;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
     </style>
     
     <body id="top">
@@ -198,6 +224,31 @@
                         <% candidatos.forEach(function(candidato) { %>
                             <div class="job-card">
                                 <h3><%= candidato.nome %></h3>
+                                <p><%= candidato.curriculo %></p>
+                                <p>Status: 
+                                    <% if (candidato.feedback === 'respondido') { %>
+                                        <span class="<%= candidato.status === 'aprovado' ? 'text-success' : 'text-danger' %>">
+                                            <%= candidato.status %>
+                                        </span>
+                                    <% } else { %>
+                                        <span class="text-warning">Em espera</span>
+                                    <% } %>
+                                </p>
+                                <% if (candidato.feedback !== 'respondido') { %>
+                                <div class="buttons">
+                                    <form action="/atualizar-candidatura" method="POST">
+                                        <input type="hidden" name="id_candidatura" value="<%= candidato.id_candidatura %>">
+                                        <input type="hidden" name="status" value="aprovado">
+                                        <button type="submit" class="btn btn-success">Aprovar</button>
+                                    </form>
+                                    
+                                    <form action="/atualizar-candidatura" method="POST">
+                                        <input type="hidden" name="id_candidatura" value="<%= candidato.id_candidatura %>">
+                                        <input type="hidden" name="status" value="reprovado">
+                                        <button type="submit" class="btn btn-warning">Rejeitar</button>
+                                    </form>
+                                </div>
+                                <% } %>
                             </div>
                         <% }); %>
                     <% } else { %>
