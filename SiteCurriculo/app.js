@@ -29,7 +29,7 @@ function checarAutenticacao(req, res, next) {
         next(); // Usuário autenticado
     } else {
         console.log('Usuário não autenticado, redirecionando para login.');
-        res.redirect('/login'); // Redireciona para a página de login
+        res.redirect('/landing-page'); // Redireciona para a página de login
     }
 }
 
@@ -95,7 +95,11 @@ app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, 'telas', 'login.html'), { error });
 });
 
-app.get('/topics-detail/:id', async (req, res) => {
+app.get('/landing-page', (req, res) => {
+    res.sendFile(path.join(__dirname, 'telas', 'landing-page.html'));
+});
+
+app.get('/topics-detail/:id', checarAutenticacao, async (req, res) => {
     const idVaga = req.params.id; // Captura a ID da vaga da URL
     const usuario = req.session.usuarioLogado;
     try {
@@ -229,7 +233,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // Rota de upload
-app.post('/upload', upload.single('curriculo'), function (req, res) {
+app.post('/upload', checarAutenticacao, upload.single('curriculo'), function (req, res) {
     if (!req.file) {
         return res.status(400).send('Nenhum arquivo enviado.');
     }
@@ -264,7 +268,7 @@ app.post('/upload', upload.single('curriculo'), function (req, res) {
     });
 });
 
-app.post('/enviar-candidatura', async (req, res) => {
+app.post('/enviar-candidatura', checarAutenticacao, async (req, res) => {
     const { id_vaga, curriculo } = req.body; // Recebe os dados enviados (id_vaga e curriculo)
 
     // Supondo que o id_candidato vem de uma sessão ou autenticação
@@ -318,7 +322,7 @@ app.get('/logout', (req, res) => {
 });
 
 // Rota para a página de vagas da empresa
-app.get('/vagasempresa', async (req, res) => {
+app.get('/vagasempresa', checarAutenticacao, async (req, res) => {
     console.log('Sessão antes da verificação em /vagasempresa:', req.session);
 
     if (!req.session.usuarioLogado) {
@@ -339,7 +343,7 @@ app.get('/vagasempresa', async (req, res) => {
     }
 });
 
-app.get('/editarvaga/:id', async (req, res) => {
+app.get('/editarvaga/:id', checarAutenticacao, async (req, res) => {
     const id_vaga = req.params.id;
 
     // Verifica se o usuário está logado
@@ -452,7 +456,7 @@ app.post('/cadastro-empresa', async (req, res) => {
 });
 
 // Cadastro de Vaga para Empresa
-app.post('/perfilempresa', async (req, res) => {
+app.post('/perfilempresa', checarAutenticacao, async (req, res) => {
     const { titulo, descricao, cidade, estado, data_fechamento, categoria} = req.body;
     const time = new Date();
     
@@ -499,7 +503,7 @@ app.post('/perfilempresa', async (req, res) => {
 });
 
 // Rota para deletar a vaga
-app.get('/deletar-vaga/:id', async (req, res) => {
+app.get('/deletar-vaga/:id', checarAutenticacao, async (req, res) => {
     const id_vaga = req.params.id;
 
     try {
@@ -518,7 +522,7 @@ app.get('/deletar-vaga/:id', async (req, res) => {
     }
 });
 
-app.post('/editar-vaga/:id', async (req, res) => {
+app.post('/editar-vaga/:id', checarAutenticacao, async (req, res) => {
     const id_vaga = req.params.id;
     const { titulo, descricao, cidade, estado, data_fechamento, categoria } = req.body;
 
@@ -539,7 +543,7 @@ app.post('/editar-vaga/:id', async (req, res) => {
 });
 
 // Rota para exibir os candidatos de uma vaga
-app.get('/candidatos/:idVaga', (req, res) => {
+app.get('/candidatos/:idVaga', checarAutenticacao, (req, res) => {
     const { idVaga } = req.params;
     const EmpresaId = req.session.usuarioLogado.id_empresa;
 
@@ -565,7 +569,7 @@ app.get('/candidatos/:idVaga', (req, res) => {
     );
 });
 
-app.post('/atualizar-candidatura', async (req, res) => {
+app.post('/atualizar-candidatura', checarAutenticacao, async (req, res) => {
     console.log(req.body);
     const { id_candidatura, status } = req.body;
 
