@@ -67,7 +67,7 @@ CREATE TABLE `candidato` (
 --
 
 INSERT INTO `candidato` (`id_candidato`, `nome`, `data_nasc`, `cpf`, `email`, `telefone`, `senha`, `data_cadastro`, `curriculo`) VALUES
-(1, 'Candidato1', '2024-11-01', '244.244.343-01', 'candidato1@gmail.com', '(11) 93031-5532', '1234', '2024-11-05 19:09:58', NULL),
+(1, 'Candidato1', '2024-11-01', '244.244.343-01', 'candidato1@gmail.com', '(11) 93031-5532', '1234', '2024-11-05 19:09:58', NULL);
 
 -- --------------------------------------------------------
 
@@ -107,7 +107,7 @@ CREATE TABLE `empresa` (
 --
 
 INSERT INTO `empresa` (`id_empresa`, `nome`, `cnpj`, `telefone`, `email`, `senha`, `data_cadastro`) VALUES
-(1, 'Empresa1', '13.122.122/122', '(11) 93069-8014', 'empresa@email.com', '1234', '2024-11-07 17:51:09'),
+(1, 'Empresa1', '13.122.122/122', '(11) 93069-8014', 'empresa@email.com', '1234', '2024-11-07 17:51:09');
 
 -- --------------------------------------------------------
 
@@ -146,7 +146,7 @@ INSERT INTO `vaga` (`id_vaga`, `titulo`, `cidade`, `descricao`, `data_publicacao
 (2, 'Contador', 'Belo Horizonte', 'Gerenciar contas e realizar auditorias financeiras.', '2024-11-03 11:00:00', '2024-12-03 18:00:00', 'MG', 1, 'Finanças'),
 (3, 'Designer Gráfico', 'Curitiba', 'Criar materiais gráficos para campanhas publicitárias.', '2024-11-04 08:00:00', '2024-12-04 17:00:00', 'PR', 1, 'Design'),
 (4, 'Professor de Inglês', 'Porto Alegre', 'Ensinar inglês para alunos de nível intermediário.', '2024-11-05 10:00:00', '2024-12-05 18:00:00', 'RS', 1, 'Educação'),
-(5, 'Músico Freelancer', 'Brasília', 'Participar de eventos e gravações.', '2024-11-06 10:00:00', '2024-12-06 18:00:00', 'DF', 1, 'Música'),
+(5, 'Músico Freelancer', 'Brasília', 'Participar de eventos e gravações.', '2024-11-06 10:00:00', '2024-12-06 18:00:00', 'DF', 1, 'Música');
 
 --
 -- Índices para tabelas despejadas
