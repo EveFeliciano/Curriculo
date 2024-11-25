@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 21/11/2024 às 02:21
+-- Tempo de geração: 25/11/2024 às 04:48
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -42,7 +42,7 @@ CREATE TABLE `administrador` (
 --
 
 INSERT INTO `administrador` (`id_administrador`, `nome`, `email`, `senha`, `data_cadastro`) VALUES
-(1, 'Administrador', 'admin@email.com', '1234', '2024-11-05 00:00:00');
+(1, 'ADM01', 'adm@email.com', '1234', '2024-11-25 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -57,7 +57,7 @@ CREATE TABLE `candidato` (
   `cpf` varchar(11) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
   `telefone` varchar(15) DEFAULT NULL,
-  `senha` varchar(10) DEFAULT NULL,
+  `senha` varchar(60) DEFAULT NULL,
   `data_cadastro` datetime DEFAULT NULL,
   `curriculo` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -67,7 +67,7 @@ CREATE TABLE `candidato` (
 --
 
 INSERT INTO `candidato` (`id_candidato`, `nome`, `data_nasc`, `cpf`, `email`, `telefone`, `senha`, `data_cadastro`, `curriculo`) VALUES
-(1, 'Candidato1', '2024-11-01', '244.244.343-01', 'candidato1@gmail.com', '(11) 93031-5532', '1234', '2024-11-05 19:09:58', NULL);
+(16, 'Cand', '2001-01-01', '123.456.789', 'cand@email.com', '(11) 12345-6789', '$2b$10$2POZAd20zSvraeagGAaVT.0C0CY1FYt8uIF0EpPX3s70731z/xv2O', '2024-11-25 00:47:36', NULL);
 
 -- --------------------------------------------------------
 
@@ -81,12 +81,11 @@ CREATE TABLE `candidatura` (
   `status` enum('em espera','reprovado','aprovado') DEFAULT NULL,
   `feedback` text DEFAULT NULL,
   `id_vaga` int(11) DEFAULT NULL,
-  `curriculo` text DEFAULT NULL
+  `curriculo` text DEFAULT NULL,
+  `motivo` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Despejando dados para a tabela `candidatura`
---
+-- --------------------------------------------------------
 
 --
 -- Estrutura para tabela `empresa`
@@ -98,7 +97,7 @@ CREATE TABLE `empresa` (
   `cnpj` varchar(14) DEFAULT NULL,
   `telefone` varchar(15) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
-  `senha` varchar(10) DEFAULT NULL,
+  `senha` varchar(255) DEFAULT NULL,
   `data_cadastro` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -107,7 +106,7 @@ CREATE TABLE `empresa` (
 --
 
 INSERT INTO `empresa` (`id_empresa`, `nome`, `cnpj`, `telefone`, `email`, `senha`, `data_cadastro`) VALUES
-(1, 'Empresa1', '13.122.122/122', '(11) 93069-8014', 'empresa@email.com', '1234', '2024-11-07 17:51:09');
+(6, 'Empresa 01', '12.345.678/000', '(11) 98765-4321', 'emp@email.com', '$2b$10$TWrcgJ2rTYKmx./kReZEJuufXWnbh0yRfAMH9WZT2DUfNSNKZg7fG', '2024-11-25 00:16:54');
 
 -- --------------------------------------------------------
 
@@ -141,12 +140,13 @@ CREATE TABLE `vaga` (
 --
 -- Despejando dados para a tabela `vaga`
 --
+
 INSERT INTO `vaga` (`id_vaga`, `titulo`, `cidade`, `descricao`, `data_publicacao`, `data_fechamento`, `estado`, `id_empresa`, `categoria`) VALUES
-(1, 'Analista de Marketing', 'Rio de Janeiro', 'Planejar e executar campanhas de marketing digital.', '2024-11-02 09:30:00', '2024-12-02 17:00:00', 'RJ', 1, 'Marketing'),
-(2, 'Contador', 'Belo Horizonte', 'Gerenciar contas e realizar auditorias financeiras.', '2024-11-03 11:00:00', '2024-12-03 18:00:00', 'MG', 1, 'Finanças'),
-(3, 'Designer Gráfico', 'Curitiba', 'Criar materiais gráficos para campanhas publicitárias.', '2024-11-04 08:00:00', '2024-12-04 17:00:00', 'PR', 1, 'Design'),
-(4, 'Professor de Inglês', 'Porto Alegre', 'Ensinar inglês para alunos de nível intermediário.', '2024-11-05 10:00:00', '2024-12-05 18:00:00', 'RS', 1, 'Educação'),
-(5, 'Músico Freelancer', 'Brasília', 'Participar de eventos e gravações.', '2024-11-06 10:00:00', '2024-12-06 18:00:00', 'DF', 1, 'Música');
+(17, 'Web Designer', 'Ribeirão Pires', 'Estamos em busca de um Web Designer criativo e experiente em design de interfaces digitais. O candidato ideal deve ter habilidades em design responsivo e domínio das principais ferramentas como Adobe XD, Figma e Sketch.', '2024-11-25 00:18:29', '2024-11-30 00:00:00', 'SP', 6, 'design'),
+(18, 'Marketing Digital', 'Belo Horizonte', 'Estamos em busca de um Analista de Marketing Digital criativo e analítico para integrar nossa equipe. O candidato ideal deve ter experiência em estratégias digitais, incluindo SEO, SEM, redes sociais, e-mail marketing e análise de dados.', '2024-11-25 00:23:25', '2024-11-30 00:00:00', 'MG', 6, 'marketing'),
+(19, 'Contador', 'Santo André', 'Estamos em busca de um Contador responsável, detalhista e com sólida experiência na área contábil para integrar nossa equipe. O candidato ideal deve ter conhecimento em legislação fiscal, contabilidade geral, análise de balanços, e elaboração de relatórios financeiros.', '2024-11-25 00:24:23', '2024-11-30 00:00:00', 'SP', 6, 'finanças'),
+(20, 'Produtor Musical', 'Rio de Janeiro', 'Estamos em busca de um Produtor Musical criativo, experiente e apaixonado por música para integrar nossa equipe. O candidato ideal deve ter habilidades em gravação, edição, mixagem e masterização de áudio, além de um bom conhecimento das tendências musicais e da indústria fonográfica.', '2024-11-25 00:25:19', '2024-11-30 00:00:00', 'RJ', 6, 'música'),
+(21, 'Professor de Matemática', 'Salvador', 'Estamos em busca de um Professor de Matemática comprometido, didático e apaixonado pelo ensino para integrar nossa equipe. O candidato ideal deve ter sólida formação acadêmica em Matemática, ser capaz de transmitir conceitos de forma clara e engajante e adaptar métodos de ensino às necessidades dos alunos.', '2024-11-25 00:26:58', '2024-11-30 00:00:00', 'BA', 6, 'educação');
 
 --
 -- Índices para tabelas despejadas
@@ -204,31 +204,31 @@ ALTER TABLE `vaga`
 -- AUTO_INCREMENT de tabela `administrador`
 --
 ALTER TABLE `administrador`
-  MODIFY `id_administrador` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_administrador` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de tabela `candidato`
 --
 ALTER TABLE `candidato`
-  MODIFY `id_candidato` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_candidato` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT de tabela `candidatura`
 --
 ALTER TABLE `candidatura`
-  MODIFY `id_candidatura` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_candidatura` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de tabela `empresa`
 --
 ALTER TABLE `empresa`
-  MODIFY `id_empresa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_empresa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de tabela `vaga`
 --
 ALTER TABLE `vaga`
-  MODIFY `id_vaga` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id_vaga` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- Restrições para tabelas despejadas
