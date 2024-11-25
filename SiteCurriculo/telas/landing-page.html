@@ -21,7 +21,190 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans&display=swap" rel="stylesheet">
-                            
+
+        <style>
+            /* Sombra no quadrado onde está o comentário */
+            .testimonial-card {
+                background-color: var(--white-color);
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3); /* Sombra mais escura no quadrado */
+                margin-bottom: 20px; /* Espaçamento entre os comentários */
+            }
+            body{
+                background-color: rgb(230, 230, 230);
+            }
+
+            /* Sombra na foto de perfil */
+            .testimonial-card img {
+                border-radius: 50%;
+                width: 60px;
+                height: 60px;
+                object-fit: cover;
+                margin-right: 15px; /* Espaçamento entre a foto e o nome */
+                box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.4); /* Sombra mais forte na imagem */
+            }
+
+            /* Ajuste nos comentários */
+            .carousel-item p {
+                font-size: 1rem; /* Reduzindo o tamanho da fonte */
+                line-height: 1.5;
+                color: var(--p-color); /* Cor suave para o comentário */
+                margin-top: 15px; /* Espaçamento entre o nome/cargo e o comentário */
+            }
+
+            /* Estilo do nome e cargo */
+            .carousel-item h4 {
+                font-size: 1.25rem; /* Tamanho de fonte ajustado para o nome */
+                font-weight: bold;
+                color: var(--primary-color); /* Cor de destaque */
+            }
+
+            /* Controles do Carrossel */
+            .carousel-control-prev-icon,
+            .carousel-control-next-icon {
+                background-color: var(--primary-color); /* Cor das setas */
+            }
+
+            /* Ajuste na área de comentários */
+            .carousel-inner {
+                padding-left: 15px;
+                padding-right: 15px; /* Espaçamento nas laterais para evitar que as setas fiquem muito próximas */
+            }
+
+            /* Alinhamento do carrossel */
+            .testimonial {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .testimonial .row {
+                justify-content: center;
+            }
+
+            /* Estilo do botão de pesquisa */
+            .form-control {
+                border-radius: 50px;
+                padding: 10px;
+            }
+
+            .form-control:focus {
+                box-shadow: none;
+                border-color: var(--secondary-color);
+            }
+
+            .form-control + button {
+                background-color: var(--custom-btn-bg-color);
+                border-radius: 50px;
+                color: var(--white-color);
+                transition: background-color 0.3s ease;
+            }
+
+            .form-control + button:hover {
+                background-color: var(--custom-btn-bg-hover-color);
+            }
+
+            /* Seções de conteúdo */
+            .section-title {
+                font-size: 2.5rem;
+                font-weight: bold;
+                margin-bottom: 30px;
+                color: var(--primary-color); /* Cor do título */
+            }
+
+            /* Card de Benefícios */
+            .card {
+                border: none;
+                border-radius: 10px;
+                box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3); /* Sombra mais forte nos cards */
+            }
+
+            .card-body {
+                padding: 30px;
+                background-color: var(--white-color);
+            }
+
+            /* Cor do texto nas seções */
+            .card-text {
+                color: var(--p-color); /* Texto de descrição */
+            }
+
+            .card-title {
+                color: var(--primary-color); /* Cor do título do card */
+            }
+
+            /* Seções de benefícios e números */
+            .bg-light {
+                background-color: var(--section-bg-color); /* Cor de fundo da seção de números */
+                box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3); /* Sombra mais escura nas seções de benefícios */
+            }
+
+            /* Seções gerais */
+            section {
+                background-color: var(--white-color);
+                padding: 50px;
+                border-radius: 10px;
+                box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3); /* Sombra mais escura nas seções gerais */
+                margin-bottom: 30px;
+            }
+
+            /* Estilo do botão */
+            .btn-primary {
+                background-color: var(--custom-btn-bg-color); /* Usando a cor personalizada para o fundo */
+                color: var(--white-color); /* Texto branco */
+                border: 2px solid var(--custom-btn-bg-color); /* Bordas com a mesma cor do botão */
+                padding: 10px 20px;
+                border-radius: 30px; /* Arredondando os cantos */
+                font-weight: bold;
+                transition: all 0.3s ease;
+            }
+
+            /* Efeito de hover */
+            .btn-primary:hover {
+                background-color: var(--custom-btn-bg-hover-color); /* Cor de fundo ao passar o mouse */
+                border-color: var(--custom-btn-bg-hover-color); /* Mudando a cor da borda no hover */
+                color: var(--white-color); /* Cor do texto no hover */
+            }
+
+            /* Botão de "Entrar" */
+            .btn-secondary {
+                background-color: var(--primary-color); /* Usando a cor principal para o fundo */
+                color: var(--white-color); /* Texto branco */
+                border: 2px solid var(--primary-color); /* Bordas com a cor primária */
+                padding: 10px 20px;
+                border-radius: 30px;
+                font-weight: bold;
+                transition: all 0.3s ease;
+            }
+
+            /* Efeito de hover para o botão "Entrar" */
+            .btn-secondary:hover {
+                background-color: var(--secondary-color); /* Cor de fundo ao passar o mouse */
+                border-color: var(--secondary-color); /* Mudando a cor da borda no hover */
+                color: var(--dark-color); /* Cor do texto no hover */
+            }
+            .espaco{
+                padding-top: 5%;
+            }
+            /* Classe personalizada para botão grande */
+            .btn-large {
+                font-size: 1.5rem; /* Aumenta o tamanho do texto */
+                padding: 15px 40px; /* Aumenta o padding para dar mais espaço ao redor do texto */
+                border-radius: 50px; /* Mantém o botão arredondado */
+                font-weight: bold; /* Deixa o texto em negrito */
+                text-transform: uppercase; /* Deixa o texto em maiúsculas */
+                letter-spacing: 2px; /* Aumenta o espaçamento entre as letras */
+                transition: all 0.3s ease; /* Efeito suave para transições */
+            }
+
+            /* Efeito de hover para o botão grande */
+            .btn-large:hover {
+                background-color: var(--primary-color); /* Cor de fundo ao passar o mouse */
+                border-color: var(--primary-color); /* Borda da cor primária */
+                color: var(--white-color); /* Mantém o texto branco no hover */
+            }
+        </style>
     </head>
     
     <body id="top">
@@ -46,7 +229,30 @@
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav ms-lg-5 me-lg-auto">
                             <li class="nav-item">
-                                <a class="nav-link click-scroll" href="/login">Login</a>
+                                <a class="nav-link click-scroll" href="#section_1">Início</a>
+                            </li>
+                    
+                            <li class="nav-item">
+                                <a class="nav-link click-scroll" href="#section_2">Sobre Nós</a>
+                            </li>
+                    
+                            <li class="nav-item">
+                                <a class="nav-link click-scroll" href="section_3">Categorias</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link click-scroll" href="section_4">Comentários</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link click-scroll" href="section_5">localização</a>
+                            </li>
+                        </ul>
+                    
+                        <!-- LOGIN botão no canto direito -->
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item">
+                                <a class="nav-link click-scroll login-btn" style="color: #13547a;" href="/login"><b>LOGIN</b></a>
                             </li>
                         </ul>
                     </div>
@@ -54,18 +260,250 @@
             </nav>
             
 
-            <div class="container">
-                <div class="row">
-
-                    <div class="col-lg-8 col-12 mx-auto">
-                        <h1 class="text-white text-center">EMPREGA AÍ!</h1>
-
-                        <h6 class="text-center">Entrega seu curriculo aí, que te empregamos aqui!</h6>                         
+            <section class="hero-section d-flex justify-content-center align-items-center" id="section_1">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-12 mx-auto">
+                            <h1 class="text-white text-center">EMPREGA AÍ!</h1>
+                            <h6 class="text-center">Entrega seu curriculo aí, que te empregamos aqui!</h6>
+                            <p class="espaco"> </p>
+                            <div class="d-flex justify-content-center">
+                                <!-- Botão grande -->
+                                <a href="/login" class="btn btn-primary btn-large">ENTRE AGORA</a>
+                            </div>                        
+                        </div>
                     </div>
                 </div>
-            </div>                 
-        </footer>
+            </section>            
 
+            <!-- Seção Quem Somos -->
+            <section class="container py-5" id="section_2">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h2 class="section-title">Quem Somos?</h2>
+                        <p>
+                            O Emprega Aí é uma plataforma que conecta empresas e candidatos a vagas de emprego de forma simples e eficiente.
+                            Oferecemos um ambiente seguro para enviar currículos e encontrar a vaga dos seus sonhos. Nossa missão é ajudar a criar conexões entre profissionais e empresas para o crescimento de todos.
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <img src="https://blog.adrianalombardo.com/wp-content/uploads/2019/08/como-encontrar-emprego.jpg" class="img-fluid rounded" alt="Quem somos imagem">
+                    </div>                    
+                </div>
+            </section>
+
+            <!-- Seção de Categorias -->
+            <section class="container py-5" id="section_categories">
+                <div class="row text-center" id="section_3">
+                    <div class="col-12">
+                        <h2 class="section-title">Categorias de Vagas</h2>
+                        <p>Explore as categorias de vagas e descubra a oportunidade certa para você.</p>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <!-- Card de Design -->
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Design</h5>
+                                <p class="card-text">Encontre vagas na área de design gráfico, web design, UI/UX, e muito mais. Dê o próximo passo na sua carreira criativa.</p>
+                                <div class="d-flex justify-content-center">
+                                    <a href="/login" class="btn btn-primary">Saiba Mais</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card de Marketing -->
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Marketing</h5>
+                                <p class="card-text">Explore oportunidades em marketing digital, SEO, publicidade e estratégias de mídia. Transforme seu talento em resultados.</p>
+                                <div class="d-flex justify-content-center">
+                                    <a href="/login" class="btn btn-primary">Saiba Mais</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card de Finanças -->
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Finanças</h5>
+                                <p class="card-text">Descubra vagas em contabilidade, análise financeira, auditoria, e muito mais. Construa sua carreira na área financeira.</p>
+                                <div class="d-flex justify-content-center">
+                                    <a href="/login" class="btn btn-primary">Saiba Mais</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card de Música -->
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Música</h5>
+                                <p class="card-text">Se você é apaixonado por música, explore vagas em produção musical, ensino de música, eventos e mais!</p>
+                                <div class="d-flex justify-content-center">
+                                    <a href="/login" class="btn btn-primary">Saiba Mais</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card de Educação -->
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Educação</h5>
+                                <p class="card-text">Explore oportunidades para professores, coordenadores pedagógicos, tutores e outros profissionais da educação.</p>
+                                <div class="d-flex justify-content-center">
+                                    <a href="/login" class="btn btn-primary">Saiba Mais</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card Mais Oportunidades -->
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Mais Oportunidades</h5>
+                                <p class="card-text">Além das categorias acima, temos muitas outras oportunidades esperando por você. Não perca mais tempo!</p>
+                                <div class="d-flex justify-content-center">
+                                    <a href="/login" class="btn btn-primary">Saiba Mais</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Carrossel de Comentários -->
+            <section class="container py-5" id="section_4">
+                <div class="row text-center">
+                    <div class="col-12">
+                        <h2 class="section-title">Comentários de Clientes</h2>
+                        <p>Veja o que nossos usuários estão dizendo.</p>
+                    </div>
+                </div>
+
+                <div id="carouselComentarios" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000"> <!-- 5 segundos -->
+                    <div class="carousel-inner">
+                        <!-- Comentário 1 -->
+                        <div class="carousel-item active">
+                            <div class="testimonial">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="d-flex justify-content-center">
+                                            <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="Comentário 1" class="rounded-circle" width="80">
+                                        </div>
+                                        <h4 class="mt-3">João Silva</h4>
+                                        <p class="text-muted">"Adorei a experiência! O site é muito fácil de usar e me ajudou a encontrar um emprego rápido."</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Comentário 2 -->
+                        <div class="carousel-item">
+                            <div class="testimonial">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="d-flex justify-content-center">
+                                            <img src="https://randomuser.me/api/portraits/women/1.jpg" alt="Comentário 2" class="rounded-circle" width="80">
+                                        </div>
+                                        <h4 class="mt-3">Maria Oliveira</h4>
+                                        <p class="text-muted">"Fiquei muito satisfeita com os serviços. Ajudou muito na busca por novas oportunidades."</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Comentário 3 -->
+                        <div class="carousel-item">
+                            <div class="testimonial">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="d-flex justify-content-center">
+                                            <img src="https://randomuser.me/api/portraits/men/2.jpg" alt="Comentário 3" class="rounded-circle" width="80">
+                                        </div>
+                                        <h4 class="mt-3">Carlos Souza</h4>
+                                        <p class="text-muted">"Excelente plataforma! Super recomendo. Fácil de navegar e com ótimas vagas disponíveis."</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Controles do Carrossel -->
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselComentarios" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Anterior</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselComentarios" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Próximo</span>
+                    </button>
+                </div>
+            </section>
+        
+            <!-- Seção de Benefícios -->
+            <section class="container py-5">
+                <div class="row text-center">
+                    <div class="col-12">
+                        <h2 class="section-title">Por que escolher o Emprega Aí?</h2>
+                        <p>Saiba como podemos ajudar você a alcançar seus objetivos profissionais.</p>
+                    </div>
+                </div>
+                <div class="row text-center">
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Para Candidatos</h5>
+                                <p class="card-text">Encontre oportunidades de trabalho de acordo com suas habilidades e interesses. Processos seletivos rápidos e simplificados.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Para Empresas</h5>
+                                <p class="card-text">Encontre os melhores talentos de forma ágil. Publique vagas e receba currículos qualificados diretamente no seu painel.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Plataforma Segura</h5>
+                                <p class="card-text">Garantimos a privacidade de seus dados. Nossa plataforma é segura e confiável para candidatos e empregadores.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção de Mapa -->
+            <section class="container py-5" id="section_5">
+                <div class="row text-center">
+                    <div class="col-12">
+                        <h2 class="section-title">Onde Estamos - Ribeirão Pires</h2>
+                        <p>Visite-nos em Ribeirão Pires ou entre em contato online.</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <!-- Mapa da localização de Ribeirão Pires -->
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3656.0771242683724!2d-46.5332522!3d-23.6932675!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce5cb3a49303b3%3A0x53e29a2b89eacb42!2sRibeir%C3%A3o%20Pires%2C%20SP!5e0!3m2!1spt-BR!2sbr!4v1695750192349!5m2!1spt-BR!2sbr" 
+                            width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy">
+                        </iframe>
+                    </div>
+                </div>
+            </section>
+        </main>    
 
         <!-- JAVASCRIPT FILES -->
         <script src="./js/jquery.min.js"></script>

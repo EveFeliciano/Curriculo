@@ -22,6 +22,7 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'telas'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Middleware para verificar se o usuário está logado
 function checarAutenticacao(req, res, next) {
@@ -72,15 +73,7 @@ app.get('/', checarAutenticacao, async (req, res) => {
                 vagas // Passa as vagas encontradas para a página
             });
         }else{
-            res.render('index', {
-                usuario,
-                designVagas,
-                marketingVagas,
-                financesVagas,
-                musicVagas,
-                educationVagas,
-                vagas // Passa as vagas encontradas para a página
-            });
+            res.redirect('/admin');
         }
         
     } catch (error) {
@@ -117,6 +110,244 @@ app.get('/topics-detail/:id', checarAutenticacao, async (req, res) => {
     }
 });
 
+// Rota para o painel de administração
+app.get('/admin', checarAutenticacao, (req, res) => {
+    // Buscar vagas, candidatos e empresas do banco de dados
+    const vagasQuery = 'SELECT * FROM vaga';
+    const candidatosQuery = 'SELECT * FROM candidato';
+    const empresasQuery = 'SELECT * FROM empresa';
+
+    db.query(vagasQuery, (err, vagas) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Erro ao carregar vagas.');
+        }
+
+        db.query(candidatosQuery, (err, candidatos) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).send('Erro ao carregar candidatos.');
+            }
+
+            db.query(empresasQuery, (err, empresas) => {
+                if (err) {
+                    console.error(err);
+                    return res.status(500).send('Erro ao carregar empresas.');
+                }
+
+                // Passar as informações para a página EJS
+                res.render('admin', {
+                    vagas: vagas,
+                    candidatos: candidatos,
+                    empresas: empresas
+                });
+            });
+        });
+    });
+});
+
+// Excluir vaga
+app.post('/admin/excluir-vaga', checarAutenticacao, (req, res) => {
+    const idVaga = req.body.id_vaga;
+
+    // Inicia uma transação para garantir consistência
+    db.beginTransaction((err) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Erro ao iniciar a transação.');
+        }
+
+        // Excluir inscrições relacionadas às candidaturas associadas à vaga
+        db.query(
+            `DELETE FROM inscreve WHERE id_candidatura IN 
+             (SELECT id_candidatura FROM candidatura WHERE id_vaga = ?)`,
+            [idVaga],
+            (err) => {
+                if (err) {
+                    return db.rollback(() => {
+                        console.error(err);
+                        return res.status(500).send('Erro ao excluir inscrições.');
+                    });
+                }
+
+                // Excluir candidaturas associadas à vaga
+                db.query('DELETE FROM candidatura WHERE id_vaga = ?', [idVaga], (err) => {
+                    if (err) {
+                        return db.rollback(() => {
+                            console.error(err);
+                            return res.status(500).send('Erro ao excluir candidaturas.');
+                        });
+                    }
+
+                    // Excluir a vaga
+                    db.query('DELETE FROM vaga WHERE id_vaga = ?', [idVaga], (err) => {
+                        if (err) {
+                            return db.rollback(() => {
+                                console.error(err);
+                                return res.status(500).send('Erro ao excluir vaga.');
+                            });
+                        }
+
+                        // Confirma a transação
+                        db.commit((err) => {
+                            if (err) {
+                                return db.rollback(() => {
+                                    console.error(err);
+                                    return res.status(500).send('Erro ao finalizar a transação.');
+                                });
+                            }
+                            res.redirect('/admin');
+                        });
+                    });
+                });
+            }
+        );
+    });
+});
+
+
+// Excluir candidato
+app.post('/admin/excluir-candidato', checarAutenticacao, (req, res) => {
+    const idCandidato = req.body.id_candidato;
+
+    db.beginTransaction((err) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Erro ao iniciar a transação.');
+        }
+
+        db.query('DELETE FROM inscreve WHERE id_candidato = ?', [idCandidato], (err) => {
+            if (err) {
+                return db.rollback(() => {
+                    console.error(err);
+                    res.status(500).send('Erro ao excluir inscrições.');
+                });
+            }
+
+            db.query('DELETE FROM candidatura WHERE id_candidatura NOT IN (SELECT id_candidatura FROM inscreve)', (err) => {
+                if (err) {
+                    return db.rollback(() => {
+                        console.error(err);
+                        res.status(500).send('Erro ao excluir candidaturas.');
+                    });
+                }
+
+                db.query('DELETE FROM candidato WHERE id_candidato = ?', [idCandidato], (err) => {
+                    if (err) {
+                        return db.rollback(() => {
+                            console.error(err);
+                            res.status(500).send('Erro ao excluir candidato.');
+                        });
+                    }
+
+                    db.commit((err) => {
+                        if (err) {
+                            return db.rollback(() => {
+                                console.error(err);
+                                res.status(500).send('Erro ao finalizar transação.');
+                            });
+                        }
+                        res.redirect('/admin');
+                    });
+                });
+            });
+        });
+    });
+});
+
+
+// Excluir empresa
+app.post('/admin/excluir-empresa', checarAutenticacao, (req, res) => {
+    const idEmpresa = req.body.id_empresa;
+
+    // Inicia uma transação para garantir consistência
+    db.beginTransaction((err) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Erro ao iniciar a transação.');
+        }
+
+        // Verifica se a empresa existe
+        db.query('SELECT id_empresa FROM empresa WHERE id_empresa = ?', [idEmpresa], (err, results) => {
+            if (err) {
+                return db.rollback(() => {
+                    console.error(err);
+                    return res.status(500).send('Erro ao verificar a empresa.');
+                });
+            }
+            if (results.length === 0) {
+                return db.rollback(() => {
+                    res.status(404).send('Empresa não encontrada.');
+                });
+            }
+
+            // Excluir inscrições relacionadas às candidaturas associadas às vagas da empresa
+            db.query(
+                `DELETE FROM inscreve WHERE id_candidatura IN 
+                 (SELECT id_candidatura FROM candidatura WHERE id_vaga IN 
+                  (SELECT id_vaga FROM vaga WHERE id_empresa = ?))`,
+                [idEmpresa],
+                (err) => {
+                    if (err) {
+                        return db.rollback(() => {
+                            console.error(err);
+                            return res.status(500).send('Erro ao excluir inscrições.');
+                        });
+                    }
+
+                    // Excluir candidaturas associadas às vagas da empresa
+                    db.query(
+                        'DELETE FROM candidatura WHERE id_vaga IN (SELECT id_vaga FROM vaga WHERE id_empresa = ?)',
+                        [idEmpresa],
+                        (err) => {
+                            if (err) {
+                                return db.rollback(() => {
+                                    console.error(err);
+                                    return res.status(500).send('Erro ao excluir candidaturas.');
+                                });
+                            }
+
+                            // Excluir vagas da empresa
+                            db.query('DELETE FROM vaga WHERE id_empresa = ?', [idEmpresa], (err) => {
+                                if (err) {
+                                    return db.rollback(() => {
+                                        console.error(err);
+                                        return res.status(500).send('Erro ao excluir vagas.');
+                                    });
+                                }
+
+                                // Excluir a empresa
+                                db.query('DELETE FROM empresa WHERE id_empresa = ?', [idEmpresa], (err) => {
+                                    if (err) {
+                                        return db.rollback(() => {
+                                            console.error(err);
+                                            return res.status(500).send('Erro ao excluir empresa.');
+                                        });
+                                    }
+
+                                    // Confirma a transação
+                                    db.commit((err) => {
+                                        if (err) {
+                                            return db.rollback(() => {
+                                                console.error(err);
+                                                return res.status(500).send('Erro ao finalizar a transação.');
+                                            });
+                                        }
+                                        res.redirect('/admin');
+                                    });
+                                });
+                            });
+                        }
+                    );
+                }
+            );
+        });
+    });
+});
+
+
+
+
 app.get('/inscricoes', checarAutenticacao, async (req, res) => {
     const id_candidato = req.session.usuarioLogado.id_candidato; 
     
@@ -127,7 +358,7 @@ app.get('/inscricoes', checarAutenticacao, async (req, res) => {
     try {
         const candidaturas = await new Promise((resolve, reject) => {
             const query = `
-                SELECT Candidatura.id_candidatura, Vaga.titulo AS vaga, Candidatura.status, Candidatura.feedback
+                SELECT Candidatura.id_candidatura, Vaga.titulo AS vaga, Candidatura.status, Candidatura.feedback, Candidatura.motivo
                 FROM Candidatura
                 JOIN Vaga ON Candidatura.id_vaga = Vaga.id_vaga
                 JOIN inscreve ON Candidatura.id_candidatura = inscreve.id_candidatura
@@ -173,51 +404,47 @@ app.get('/vagas', async (req, res) => {
 });
 
 // Função de login com persistência de sessão
-app.post('/login', (req, res) => {
+app.post('/login', async (req, res) => {
     const { username, password } = req.body;
 
     console.log("Tentativa de login com:", username); // Log de depuração
-    console.log("Sessão inicial:", req.session); // Log da sessão antes da verificação
 
-    VerificaLogin(username, password)
-        .then((user) => {
-            console.log("Resultado VerificaLogin:", user); // Log de depuração
-            if (user) {
-                req.session.usuarioLogado = user;
-                req.session.tipoUsuario = 'candidato';
-                console.log("Sessão após login candidato:", req.session);
-                res.redirect('/');
-            } else {
-                return VerificaLoginAdmin(username, password);
-            }
-        })
-        .then((admin) => {
-            console.log("Resultado VerificaLoginAdmin:", admin); // Log de depuração
-            if (admin) {
-                req.session.usuarioLogado = admin;
-                req.session.tipoUsuario = 'admin';
-                console.log("Sessão após login admin:", req.session);
-                res.redirect('/');
-            } else if (admin === false || admin === null) {
-                return VerificaEmpresa(username, password);
-            }
-        })
-        .then((empresa) => {
-            console.log("Resultado VerificaEmpresa:", empresa); // Log de depuração
-            if (empresa) {
-                req.session.usuarioLogado = empresa;
-                req.session.tipoUsuario = 'empresa';
-                console.log("Sessão após login empresa:", req.session);
-                res.redirect('/');
-            } else if (empresa === false || empresa === null) {
-                const errorMsg = encodeURIComponent('Nome de usuário ou senha incorretos!');
-                res.redirect(`/login?error=${errorMsg}`); // Passa o erro na URL
-            }
-        })
-        .catch((err) => {
-            console.error("Erro no servidor:", err);
-            res.status(500).send('Erro no servidor');
-        });
+    try {
+        // 1. Verifica login do candidato
+        const user = await VerificaLogin(username, password);
+        if (user && user.success) {
+            req.session.usuarioLogado = user.user; // Armazena os dados do candidato
+            req.session.tipoUsuario = 'candidato';
+            console.log("Sessão após login candidato:", req.session);
+            return res.redirect('/'); // Redireciona para a página inicial
+        }
+
+        // 2. Verifica login do administrador
+        const admin = await VerificaLoginAdmin(username, password);
+        if (admin) {
+            req.session.usuarioLogado = admin; // Armazena os dados do admin
+            req.session.tipoUsuario = 'admin';
+            console.log("Sessão após login admin:", req.session);
+            return res.redirect('/'); // Redireciona para a página inicial
+        }
+
+        // 3. Verifica login da empresa
+        const empresa = await VerificaEmpresa(username, password);
+        if (empresa && empresa.success) {
+            req.session.usuarioLogado = empresa.empresa; // Armazena os dados da empresa
+            req.session.tipoUsuario = 'empresa';
+            console.log("Sessão após login empresa:", req.session);
+            return res.redirect('/'); // Redireciona para a página inicial
+        }
+
+        // 4. Falha geral no login
+        const errorMsg = encodeURIComponent('Nome de usuário ou senha incorretos!');
+        return res.redirect(`/login?error=${errorMsg}`);
+
+    } catch (err) {
+        console.error("Erro no servidor:", err);
+        res.status(500).send('Erro no servidor');
+    }
 });
 
 // Configuração do multer para salvar o arquivo no diretório 'uploads'
@@ -264,16 +491,16 @@ app.post('/upload', checarAutenticacao, upload.single('curriculo'), function (re
             return res.status(400).send('Nenhum candidato encontrado para atualizar.');
         }
 
-        res.render('perfil');
+        res.redirect("/");
     });
 });
 
 app.post('/enviar-candidatura', checarAutenticacao, async (req, res) => {
-    const { id_vaga, curriculo } = req.body; // Recebe os dados enviados (id_vaga e curriculo)
+    const { id_vaga } = req.body; // Recebe os dados enviados (id_vaga e curriculo)
 
     // Supondo que o id_candidato vem de uma sessão ou autenticação
-    const id_candidato = req.session.usuarioLogado.id_candidato; // ou qualquer outra lógica para obter o id_candidato
-
+    const id_candidato = req.session.usuarioLogado.id_candidato;
+    const curriculo = req.session.usuarioLogado.curriculo;
     if (!id_candidato || !id_vaga || !curriculo) {
         return res.status(400).json({ success: false, message: 'Campos obrigatórios faltando: id_candidato, id_vaga ou curriculo' });
     }
@@ -571,7 +798,7 @@ app.get('/candidatos/:idVaga', checarAutenticacao, (req, res) => {
 
 app.post('/atualizar-candidatura', checarAutenticacao, async (req, res) => {
     console.log(req.body);
-    const { id_candidatura, status } = req.body;
+    const { id_candidatura, status, feedback } = req.body;
 
     if (!id_candidatura || !status) {
         return res.status(400).json({ success: false, message: "Parâmetros obrigatórios faltando." });
@@ -580,10 +807,10 @@ app.post('/atualizar-candidatura', checarAutenticacao, async (req, res) => {
     try {
         // Atualiza o status e define como "respondido"
         const query = `UPDATE Candidatura 
-                       SET status = ?, feedback = 'respondido'
+                       SET status = ?, feedback = 'respondido', motivo = ?
                        WHERE id_candidatura = ?`;
         const result = await new Promise((resolve, reject) => {
-            db.query(query, [status, id_candidatura], (err, result) => {
+            db.query(query, [status, feedback, id_candidatura], (err, result) => {
                 if (err) return reject(new Error(`Erro ao atualizar candidatura: ${err.message}`));
                 resolve(result);
             });
