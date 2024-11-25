@@ -148,6 +148,7 @@
                                     <h3><%= candidatura.vaga %></h3>
                                     <p>Status: <span class="<%= candidatura.status === 'aprovado' ? 'status-aprovado' : candidatura.status === 'reprovado' ? 'status-reprovado' : 'status-em-espera' %>"><%= candidatura.status %></span></p>
                                     <p class="feedback"><%= candidatura.feedback || 'Nenhum feedback fornecido.' %></p>
+                                    <p class="feedback"><%= candidatura.motivo %></p>
                                 </div>
                             <% }); %>
                         </div>

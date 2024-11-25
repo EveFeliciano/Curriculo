@@ -177,7 +177,7 @@
 
             <nav class="navbar navbar-expand-lg">
                 <div class="container">
-                    <a class="navbar-brand" href="index.html">
+                    <a class="navbar-brand" href="/">
                         <img src="/images/Logo_Emprga_Aí-removebg-preview.png" alt="Logo da Empresa" style="height: 50px;">
                         <span>Emprega aí</span>
                     </a>
@@ -191,14 +191,6 @@
                         <ul class="navbar-nav ms-lg-5 me-lg-auto">
                             <li class="nav-item">
                                 <a class="nav-link click-scroll" href="/">Início</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link click-scroll" href="#section_2">Vagas disponíveis</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link click-scroll" href="contact.html">Nos contate</a>
                             </li>
                         </ul>
                     </div>
@@ -239,22 +231,6 @@
                         <button type="submit">Enviar Documentos</button>
                     </form>                    
                 </div>
-                
-                <center><h1 style="font-size: 30px; margin-top: 50px;">Suas Vagas</h1></center>
-
-                <% if (vagas && vagas.length > 0) { %>
-                    <% vagas.forEach(function(vaga) { %>
-                        <div class="job-card">
-                            <h3><%= vaga.titulo %></h3>
-                            <p><strong>Empresa:</strong> <%= vaga.empresa %></p>
-                            <p><strong>Localização:</strong> <%= vaga.cidade %>, <%= vaga.estado %></p>
-                            <p><strong>Data de Cadastro:</strong> <%= vaga.data_publicacao.toLocaleDateString() %></p>
-                            <p><strong>Status:</strong> Em análise</p>
-                        </div>
-                    <% }); %>
-                <% } else { %>
-                    <p class="text-center">Você ainda não se inscreveu em nenhuma vaga.</p>
-                <% } %>
         </main>
     
         <!-- JAVASCRIPT FILES -->
